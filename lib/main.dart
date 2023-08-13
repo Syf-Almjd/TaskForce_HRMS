@@ -38,27 +38,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AppCubit>(
-          create: (context) => AppCubit(),
-        ),
-        BlocProvider<BaBBloc>(
-          create: (context) => BaBBloc(),
-        ),
-        BlocProvider<NaviCubit>(
-          create: (context) => NaviCubit(),
-        ),
-      ],
-      child: MaterialApp(
-        title: "TaskForce HRMS",
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-        ).copyWith(
-          colorScheme: ThemeData().colorScheme.copyWith(
-            primary: Colors.amberAccent,
-          ),
+  Widget build(BuildContext context) {main
         ),
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
