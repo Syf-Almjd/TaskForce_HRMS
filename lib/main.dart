@@ -38,12 +38,11 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {main
-        ),
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        home: const register(),
-      ),
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      home: const register(),
     );
   }
 }
