@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+
 import '../../Components/Components.dart';
 import '../../Cubit/AppDataCubit/app_cubit.dart';
 import '../../Cubit/Navigation/navi_cubit.dart';
@@ -8,14 +9,14 @@ import '../../Models/UserModel.dart';
 import '../../generated/assets.dart';
 import 'LoginUser.dart';
 
-class register extends StatefulWidget {
-  const register({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<register> createState() => _registerState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _registerState extends State<register> {
+class _RegisterState extends State<Register> {
   bool _isObscure = true;
   bool _isLoading = false;
 
@@ -26,6 +27,7 @@ class _registerState extends State<register> {
   TextEditingController pass2 = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
+  DateTime timeNow = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,8 @@ class _registerState extends State<register> {
                 width: getWidth(50, context),
                 height: getHeight(20, context),
                 decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.yellow),
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(width: 2, color: Colors.blue),
                 ),
                 child: const Image(
                     image: AssetImage(Assets.assetsLogoTransparent),
@@ -139,8 +142,9 @@ class _registerState extends State<register> {
                           textAlign: TextAlign.right,
                         ),
                         onTap: () {
-                          NaviCubit.get(context)
-                              .navigateOff(context, const login());
+                          NaviCubit.get(context).navigateOff(
+                              context,
+                              const Login());
                         }),
                   ),
                 ],
@@ -184,7 +188,9 @@ class _registerState extends State<register> {
                                   context: context,
                                   snackBarType: SnackBarType.fail,
                                   label: 'Try again!');
-                              AppCubit.get(context).stopLoading();
+                              setState(() {
+                                _isLoading = false;
+                              });
                             }
 
                             userData = UserModel(
@@ -194,17 +200,22 @@ class _registerState extends State<register> {
                                 address: address.text,
                                 points: "10",
                                 phoneNumber: phoneNumber.text,
-                                photoID: FirebaseAuth.instance.currentUser!.uid,
-                                userID: FirebaseAuth.instance.currentUser!.uid);
-                            AppCubit.get(context)
-                                .userRegister(userData, context);
+                                photoID: "PHOTO ENCODE",
+                                userID: FirebaseAuth.instance.currentUser!.uid,
+                                lastLogin: timeNow.toString());
+                            saveSharedMap(userData.toJson());
+
+                            if (mounted) {
+                              AppCubit.get(context)
+                                  .userRegister(userData, context);
+                            }
                           }
                         },
                         child: Text(
                           "Register",
                           style: fontAlmarai(
                               fontWeight: FontWeight.bold,
-                              textColor: Colors.black),
+                              textColor: Colors.white),
                         ),
                       ),
                     ),

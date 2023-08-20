@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:taskforce_hrms/Components/Components.dart';
 
 import '../../Models/UserModel.dart';
 import '../Navigation/navi_cubit.dart';
-
 
 part 'app_state.dart';
 
@@ -53,19 +50,29 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<UserModel> getUserData() async {
     emit(GettingData());
-    var userDataList;
-    DocumentSnapshot userSnapshot =
-    await FirebaseFirestore.instance.collection("users").doc(userID).get();
-    if (userSnapshot.exists) {
-      emit(GetDataSuccessful());
-      return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
-    } else {
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userID)
+          .get();
+      if (userSnapshot.exists) {
+        emit(GetDataSuccessful());
+        return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
+      } else {
+        throw ("User Doesn't Exist");
+      }
+    } on FirebaseAuthException {
       emit(GetDataError());
-      return userDataList;
+      rethrow;
     }
   }
 
-  Future userLogin(String mail, String pwd, context) async {
+  Future<void> updateSharedUser() async {
+    var updateData = UserModel.fromJson(getUserData() as Map<String, dynamic>);
+    saveSharedMap(updateData.toJson());
+  }
+
+  Future<bool> userLogin(String mail, String pwd, context) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: mail, password: pwd);
@@ -74,14 +81,16 @@ class AppCubit extends Cubit<AppStates> {
           snackBarType: SnackBarType.save,
           label: 'Successful Login');
       emit(GetDataSuccessful());
-      return NaviCubit.get(context).navigateToHome(context);
-    } on FirebaseAuthException catch (ex) {
+      NaviCubit.get(context).navigateToHome(context);
+
+      return true;
+    } on Error {
       emit(GetDataError());
       IconSnackBar.show(
           context: context,
           snackBarType: SnackBarType.fail,
           label: 'Try again!');
-      return "${ex.code}: ${ex.message}";
+      return false;
     }
   }
 

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
+import 'package:taskforce_hrms/Modules/Authentication/AuthPage.dart';
+import 'package:taskforce_hrms/Modules/Authentication/LoginUser.dart';
 import 'API/firebase_options.dart';
 import 'Cubit/AppDataCubit/app_cubit.dart';
 import 'Cubit/BaB BloC/ba_b_bloc.dart';
@@ -16,8 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.amberAccent, // navigation bar color
-    statusBarColor: Colors.amberAccent, // status bar color
+    systemNavigationBarColor: Colors.blueAccent, // navigation bar color
+    statusBarColor: Colors.blueAccent, // status bar color
   ));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -57,12 +57,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
         ).copyWith(
           colorScheme: ThemeData().colorScheme.copyWith(
-            primary: Colors.amberAccent,
+            primary: Colors.blue,
           ),
         ),
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
-        home: const register(),
+        home: const AuthPage(),
       ),
     );
   }

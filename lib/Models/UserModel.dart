@@ -7,6 +7,7 @@ class UserModel {
   String password;
   String photoID;
   String address;
+  String lastLogin;
   String phoneNumber;
   String points;
 
@@ -17,6 +18,7 @@ class UserModel {
     required this.password,
     required this.photoID,
     required this.address,
+    required this.lastLogin,
     required this.phoneNumber,
     required this.points,
   });
@@ -30,9 +32,9 @@ class UserModel {
       'email': email,
       'password': password,
       'address': address,
+      'lastLogin': lastLogin,
       'phoneNumber': phoneNumber,
       'points': points,
-
     };
   }
 
@@ -47,6 +49,7 @@ class UserModel {
       address: json['address'],
       phoneNumber: json['phoneNumber'],
       points: json['points'],
+      lastLogin: json['lastLogin'],
     );
   }
 

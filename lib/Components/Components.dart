@@ -3,6 +3,7 @@ import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 TextStyle fontAlmarai(
@@ -299,23 +300,43 @@ void openUrl(String url) {
     mode: LaunchMode.externalApplication,
   );
 }
-enum asd {
-  save,
-  fail,
-  alert,
-}
 
 void showToast(String text, SnackBarType type, context) => IconSnackBar.show(
-  context: context,
-  snackBarType: type,
-  label: text,
-);
+      context: context,
+      snackBarType: type,
+      label: text,
+    );
+Future<void> saveSharedMap(Map mapData) async {
+  SharedPreferences prefs = await
+  SharedPreferences.getInstance();
 
-void showToast2(String text, asd, context) => IconSnackBar.show(
-  context: context,
-  snackBarType: asd as SnackBarType,
-  label: text,
-);
+  mapData.forEach((key, value) {
+    prefs.setString(key, value);
+  });
+}
+
+  Future<void> saveSharedData(Map data) async {
+    SharedPreferences prefs = await
+    SharedPreferences.getInstance();
+    data.forEach((key, value) {
+      prefs.setString(key, value);
+    });
+  }
+
+  Future<List?> getSharedList(List keys) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List Data=[];
+    for(var element in keys){
+      Data.add(prefs.getString(element));
+    }
+    return Data;
+}
+Future<String?> getSharedData(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var value = prefs.getString(key);
+  return value;
+}
+
 //OTHER
 
 // Widget buildProductDetails({String? name, String? img}) {

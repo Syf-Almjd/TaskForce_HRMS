@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:taskforce_hrms/Components/Globals.dart';
+import 'package:taskforce_hrms/Modules/Authentication/BioDS.dart';
 import 'package:taskforce_hrms/generated/assets.dart';
+
 import '../../Components/Components.dart';
 import '../../Cubit/AppDataCubit/app_cubit.dart';
 import '../../Cubit/Navigation/navi_cubit.dart';
 import 'RegisterUser.dart';
 
-class login extends StatefulWidget {
-  const login({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<login> createState() => _loginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _loginState extends State<login> {
+class _LoginState extends State<Login> {
   bool _isObscure = true;
   bool _isLoading = false;
-
-  var emailData, passData;
+  int attempts = 0;
+  bool isSuspicious = false;
+  late String emailData, passData;
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
 
@@ -33,11 +37,13 @@ class _loginState extends State<login> {
               width: getWidth(50, context),
               height: getHeight(20, context),
               decoration: BoxDecoration(
-                border: Border.all(width: 2, color: Colors.yellow),
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(width: 2, color: Colors.blue),
               ),
               child: const Image(
-                  image: AssetImage(Assets.assetsLogoTransparent),
-                  fit: BoxFit.contain),
+                image: AssetImage(Assets.assetsLogoTransparent),
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           Container(
@@ -52,39 +58,38 @@ class _loginState extends State<login> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 TextField(
                   controller: pass,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: const Icon(Icons.password_outlined),
-                      suffixIcon: IconButton(
-                          icon: Icon(_isObscure
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          })),
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.password_outlined),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                    ),
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(20),
                   alignment: Alignment.centerRight,
                   child: InkWell(
-                      child: Text(
-                        "Don't Have an account?",
-                        style:
-                            fontAlmarai(size: 11, textColor: Colors.lightBlue),
-                        textAlign: TextAlign.right,
-                      ),
-                      onTap: () {
-                        NaviCubit.get(context)
-                            .navigateOff(context, const register());
-                      }),
+                    child: Text(
+                      "Don't Have an account?",
+                      style: fontAlmarai(size: 11, textColor: Colors.lightBlue),
+                      textAlign: TextAlign.right,
+                    ),
+                    onTap: () {
+                      NaviCubit.get(context)
+                          .navigateOff(context, const Register());
+                    },
+                  ),
                 ),
               ],
             ),
@@ -101,31 +106,71 @@ class _loginState extends State<login> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (email.text.isEmpty || !email.text.contains('@')) {
-                          showToast("Wrong Email", SnackBarType.fail ,context);
+                          showToast("Wrong Email", SnackBarType.fail, context);
                         } else if (pass.text.isEmpty || pass.text.length <= 4) {
-                          showToast("Wrong Password", SnackBarType.fail ,context);
+                          showToast(
+                              "Wrong Password", SnackBarType.fail, context);
                         } else {
                           setState(() {
                             _isLoading = true;
                           });
-                          AppCubit.get(context)
+                          var successfulLogin = await AppCubit.get(context)
                               .userLogin(email.text, pass.text, context);
+                          if (!successfulLogin) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          } else {
+                            setState(() {
+                              userAuth = true;
+                            });
+                          }
                         }
                       },
                       child: Text(
                         "Login",
                         style: fontAlmarai(
                             fontWeight: FontWeight.bold,
-                            textColor: Colors.black),
+                            textColor: Colors.white),
                       ),
                     ),
                   ),
           ),
-          const SizedBox(
-            height: 40,
-          ),
+          getCube(5, context),
+          (isSuspicious || !userAuth)
+              ? Center(child: const Text("You must login with credentials!"))
+              : InkWell(
+                  onTap: () async {
+                    var savedID = await getSharedData("userID");
+                    var isVerified = await BioDS();
+                    var UserData = await AppCubit.get(context).getUserData();
+
+                    if (savedID == UserData.userID &&
+                        mounted &&
+                        isVerified &&
+                        attempts <= 3) {
+                      showToast("Successful!", SnackBarType.save, context);
+                      NaviCubit.get(context).navigateToHome(context);
+                    } else {
+                      if (attempts >= 4 || savedID == null) {
+                        setState(() {
+                          isSuspicious = true;
+                        });
+                      }
+                      attempts++;
+                      showToast("Unsuccessful, try again", SnackBarType.fail,
+                          context);
+                    }
+                  },
+                  child: Icon(
+                    Icons.fingerprint_outlined,
+                    size: getWidth(35, context),
+                    color: Colors.grey,
+                  ),
+                ),
+          getCube(3, context),
         ],
       ),
     );

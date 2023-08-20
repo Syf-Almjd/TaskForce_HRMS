@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
-
+import '../../Modules/Home/HomePage.dart';
 
 part 'navi_state.dart';
 
@@ -23,7 +22,7 @@ class NaviCubit extends Cubit<NaviState> {
 
   void navigateToHome(context) {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const register()));
+        context, MaterialPageRoute(builder: (context) => const HomePage()));
     emit(HomeState());
   }
 

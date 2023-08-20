@@ -1,6 +1,7 @@
 package com.example.taskforce_hrms.taskforce_hrms
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
+    // ...
 }
