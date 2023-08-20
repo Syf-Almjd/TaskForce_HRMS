@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "223695938906",
+    "project_id": "taskforce-hrms",
+    "storage_bucket": "taskforce-hrms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223695938906:android:ec08fb9172414a04e7ff63",
+        "android_client_info": {
+          "package_name": "com.example.taskforce_hrms.taskforce_hrms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223695938906-49pk1q0m486o4ako3e34c1et7pmtrm7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOgRza5M_mKpA19YXZ2JoXzBRL4N_oaJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223695938906-49pk1q0m486o4ako3e34c1et7pmtrm7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
