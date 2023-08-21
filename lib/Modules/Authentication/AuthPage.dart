@@ -1,10 +1,9 @@
+
 import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:taskforce_hrms/Modules/Authentication/LoginUser.dart';
 import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
-import 'package:taskforce_hrms/Modules/Home/HomePage.dart';
-
 import '../../API/Data/inAppData.dart';
 import '../../Cubit/Navigation/navi_cubit.dart';
 
@@ -22,7 +21,7 @@ class AuthPage extends StatelessWidget {
           skip: const Text("Skip"),
           next: const Text("Next"),
           done: const Icon(
-            Icons.not_started_outlined,
+            Icons.navigate_next,
             size: 50,
           ),
           onDone: () {
@@ -34,7 +33,7 @@ class AuthPage extends StatelessWidget {
           dotsDecorator: DotsDecorator(
             size: const Size.square(10.0),
             activeSize: const Size(20.0, 10.0),
-            activeColor: Colors.amberAccent,
+            activeColor: Colors.orangeAccent,
             color: Colors.black26,
             spacing: const EdgeInsets.symmetric(horizontal: 3.0),
             activeShape: RoundedRectangleBorder(

@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
                 height: getHeight(20, context),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  border: Border.all(width: 2, color: Colors.blue),
+                  border: Border.all(width: 2),
                 ),
                 child: const Image(
                     image: AssetImage(Assets.assetsLogoTransparent),
@@ -135,10 +135,9 @@ class _RegisterState extends State<Register> {
                     padding: const EdgeInsets.all(20),
                     alignment: Alignment.centerRight,
                     child: InkWell(
-                        child: Text(
+                        child: const Text(
                           "Already have an account?",
-                          style: fontAlmarai(
-                              size: 11, textColor: Colors.lightBlue),
+                          style: TextStyle(color: Colors.blueAccent),
                           textAlign: TextAlign.right,
                         ),
                         onTap: () {
@@ -171,10 +170,14 @@ class _RegisterState extends State<Register> {
                             showToast("Number not given", SnackBarType.fail ,context);
                           } else if (email.text.isEmpty ||
                               !email.text.contains('@')) {
-                            showToast("Email is incorrect!", SnackBarType.fail ,context);
+                            showToast("Email is incorrect!", SnackBarType.fail,
+                                context);
                           } else if (pass.text.isEmpty ||
+                              pass2.text.isEmpty ||
+                              pass2.text == pass.text ||
                               pass.text.length <= 4) {
-                            showToast("Very short password", SnackBarType.fail ,context);
+                            showToast("Wrong password Format", SnackBarType.fail,
+                                context);
                           } else {
                             setState(() {
                               _isLoading = true;

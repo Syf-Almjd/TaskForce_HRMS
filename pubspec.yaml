@@ -27,7 +27,9 @@ dependencies:
   file_picker: ^5.3.3
   introduction_screen: ^3.1.11
   url_launcher: ^6.1.12
-  dart_secure: ^0.3.4
+  dart_secure: ^0.5.0
+  line_icons: ^2.0.3
+
 
 dev_dependencies:
   device_preview: ^1.1.0

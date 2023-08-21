@@ -157,10 +157,10 @@ packages:
     dependency: "direct main"
     description:
       name: dart_secure
-      sha256: "66c22b7c78831fcac9c9eafc0c430a41eac5d95195e6d785012bd187713f5e62"
+      sha256: "43aff9d0b7ad60f9002406937212c8f2cd4a6db78b5474509f4520afcb1273a2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.4"
+    version: "0.5.0"
   device_frame:
     dependency: transitive
     description:
@@ -493,6 +493,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
+  line_icons:
+    dependency: "direct main"
+    description:
+      name: line_icons
+      sha256: "249d781d922f5437ac763d9c8f5a02cf5b499a6dc3f85e4b92e074cff0a932ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   lints:
     dependency: transitive
     description:

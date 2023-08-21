@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
+import 'package:taskforce_hrms/Modules/Authentication/AuthPage.dart';
 import 'API/firebase_options.dart';
 import 'Cubit/AppDataCubit/app_cubit.dart';
 import 'Cubit/BaB BloC/ba_b_bloc.dart';
@@ -16,8 +15,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.amberAccent, // navigation bar color
-    statusBarColor: Colors.amberAccent, // status bar color
+    systemNavigationBarColor: Colors.transparent, // navigation bar color
+    statusBarColor: Colors.transparent, // status bar color
   ));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -26,6 +25,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -51,19 +51,21 @@ class MyApp extends StatelessWidget {
           create: (context) => NaviCubit(),
         ),
       ],
+
       child: MaterialApp(
         title: "TaskForce HRMS",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
         ).copyWith(
           colorScheme: ThemeData().colorScheme.copyWith(
-            primary: Colors.amberAccent,
+            primary: Colors.blueGrey,
           ),
         ),
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
-        home: const register(),
+        home: const AuthPage(),
       ),
     );
+
   }
 }

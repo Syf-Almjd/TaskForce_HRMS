@@ -1,16 +1,19 @@
-import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
-import 'package:taskforce_hrms/Modules/Authentication/LoginUser.dart';
-import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
 
-class asd extends StatelessWidget {
-  const asd({super.key});
+
+class testPage extends StatefulWidget {
+  const testPage({super.key});
 
   @override
+  State<testPage> createState() => _testPageState();
+}
+
+class _testPageState extends State<testPage> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:Center(
-        child: Text("rest"),
+    return const Scaffold(
+      body: Center(
+        child: Text("test page"),
       ),
     );
   }

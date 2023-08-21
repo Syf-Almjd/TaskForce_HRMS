@@ -50,6 +50,7 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<UserModel> getUserData() async {
     emit(GettingData());
+    var dataList;
     try {
       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
           .collection("users")
@@ -59,7 +60,8 @@ class AppCubit extends Cubit<AppStates> {
         emit(GetDataSuccessful());
         return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
       } else {
-        throw ("User Doesn't Exist");
+        print("User Doesn't Exist");
+        return dataList;
       }
     } on FirebaseAuthException {
       emit(GetDataError());
@@ -68,8 +70,11 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<void> updateSharedUser() async {
-    var updateData = UserModel.fromJson(getUserData() as Map<String, dynamic>);
-    saveSharedMap(updateData.toJson());
+    var getData= await getUserData() as Map<String, dynamic>;
+    var updateData = UserModel.fromJson(getData);
+    if (getData.isNotEmpty) {
+      saveSharedMap(updateData.toJson());
+    }
   }
 
   Future<bool> userLogin(String mail, String pwd, context) async {
@@ -81,8 +86,8 @@ class AppCubit extends Cubit<AppStates> {
           snackBarType: SnackBarType.save,
           label: 'Successful Login');
       emit(GetDataSuccessful());
+      await AppCubit.get(context).updateSharedUser();
       NaviCubit.get(context).navigateToHome(context);
-
       return true;
     } on Error {
       emit(GetDataError());
