@@ -337,6 +337,8 @@ Future<String?> getSharedData(String key) async {
   return value;
 }
 
+
+
 //OTHER
 
 // Widget buildProductDetails({String? name, String? img}) {

@@ -174,7 +174,7 @@ class _RegisterState extends State<Register> {
                                 context);
                           } else if (pass.text.isEmpty ||
                               pass2.text.isEmpty ||
-                              pass2.text == pass.text ||
+                              (pass2.text == pass.text) ||
                               pass.text.length <= 4) {
                             showToast("Wrong password Format", SnackBarType.fail,
                                 context);
@@ -182,11 +182,32 @@ class _RegisterState extends State<Register> {
                             setState(() {
                               _isLoading = true;
                             });
-                            try {
-                              await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: email.text, password: pass.text);
-                            } on FirebaseAuthException {
+
+                               FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                      email: email.text, password: pass.text).then((value) {
+
+
+                               }).catchError((error){
+
+                               });
+
+                              userData = UserModel(
+                                  email: email.text,
+                                  password: pass.text,
+                                  name: name.text,
+                                  address: address.text,
+                                  points: "10",
+                                  phoneNumber: phoneNumber.text,
+                                  photoID: "PHOTO ENCODE",
+                                  userID: FirebaseAuth.instance.currentUser!.uid,
+                                  lastLogin: timeNow.toString());
+                              saveSharedMap(userData.toJson());
+
+                              if (mounted) {
+                                AppCubit.get(context)
+                                    .userRegister(userData, context);
+                              }
+
                               IconSnackBar.show(
                                   context: context,
                                   snackBarType: SnackBarType.fail,
@@ -196,23 +217,7 @@ class _RegisterState extends State<Register> {
                               });
                             }
 
-                            userData = UserModel(
-                                email: email.text,
-                                password: pass.text,
-                                name: name.text,
-                                address: address.text,
-                                points: "10",
-                                phoneNumber: phoneNumber.text,
-                                photoID: "PHOTO ENCODE",
-                                userID: FirebaseAuth.instance.currentUser!.uid,
-                                lastLogin: timeNow.toString());
-                            saveSharedMap(userData.toJson());
 
-                            if (mounted) {
-                              AppCubit.get(context)
-                                  .userRegister(userData, context);
-                            }
-                          }
                         },
                         child: Text(
                           "Register",

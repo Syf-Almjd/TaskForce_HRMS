@@ -85,16 +85,16 @@ class AppCubit extends Cubit<AppStates> {
           context: context,
           snackBarType: SnackBarType.save,
           label: 'Successful Login');
-      emit(GetDataSuccessful());
       await AppCubit.get(context).updateSharedUser();
       NaviCubit.get(context).navigateToHome(context);
+      emit(GetDataSuccessful());
       return true;
-    } on Error {
+    } on FirebaseAuthException {
       emit(GetDataError());
-      IconSnackBar.show(
-          context: context,
-          snackBarType: SnackBarType.fail,
-          label: 'Try again!');
+      // IconSnackBar.show(
+      //     context: context,
+      //     snackBarType: SnackBarType.fail,
+      //     label: 'Try again!');
       return false;
     }
   }
