@@ -60,7 +60,6 @@ class MyApp extends StatelessWidget {
         title: "TaskForce HRMS",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          useMaterial3: true,
         ).copyWith(
           colorScheme: ThemeData(
             pageTransitionsTheme: const PageTransitionsTheme(builders: {
