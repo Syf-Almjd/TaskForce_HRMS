@@ -1,11 +1,10 @@
-
 import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:taskforce_hrms/Modules/Authentication/LoginUser.dart';
-import 'package:taskforce_hrms/Modules/Authentication/RegisterUser.dart';
+import 'package:taskforce_hrms/Modules/Authentication/AuthenticationLayout.dart';
+import 'package:taskforce_hrms/State/NavigationCubit/navi_cubit.dart';
+
 import '../../API/Data/inAppData.dart';
-import '../../Cubit/Navigation/navi_cubit.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -13,7 +12,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return userAuthMonitor(
-        authenticatedUserPage: const Login(),
+        authenticatedUserPage: const SignLayout(),
         unAuthenticatedUserPage: IntroductionScreen(
           globalBackgroundColor: Colors.white,
           pages: listPagesViewModel(context),
@@ -25,10 +24,10 @@ class AuthPage extends StatelessWidget {
             size: 50,
           ),
           onDone: () {
-            NaviCubit.get(context).navigate(context, const Register());
+            NaviCubit.get(context).navigate(context, const SignLayout());
           },
           onSkip: () {
-            NaviCubit.get(context).navigate(context, const Register());
+            NaviCubit.get(context).navigate(context, const SignLayout());
           },
           dotsDecorator: DotsDecorator(
             size: const Size.square(10.0),

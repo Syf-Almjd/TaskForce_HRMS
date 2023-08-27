@@ -6,10 +6,9 @@ class UserModel {
   String email;
   String password;
   String photoID;
-  String address;
   String lastLogin;
   String phoneNumber;
-  String points;
+  String address;
 
   UserModel({
     required this.userID,
@@ -17,13 +16,12 @@ class UserModel {
     required this.email,
     required this.password,
     required this.photoID,
-    required this.address,
     required this.lastLogin,
     required this.phoneNumber,
-    required this.points,
+    required this.address,
   });
 
-  // Convert UserModel object to a map that can be serialized to JSON
+  // Convert UserModel object to a MAP that can be serialized to JSON
   Map<String, dynamic> toJson() {
     return {
       'userID': userID,
@@ -31,14 +29,25 @@ class UserModel {
       'photoID': photoID,
       'email': email,
       'password': password,
-      'address': address,
       'lastLogin': lastLogin,
+      'address': address,
       'phoneNumber': phoneNumber,
-      'points': points,
     };
   }
 
-  // Create a UserModel object from a JSON map
+  factory UserModel.empty() {
+    return UserModel(
+        userID: "userID",
+        name: "name",
+        email: "email",
+        password: "password",
+        photoID: "photoID",
+        lastLogin: "lastLogin",
+        phoneNumber: "phoneNumber",
+        address: "address");
+  }
+
+  /// Create a UserModel object from a JSON map
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       userID: json['userID'],
@@ -48,12 +57,11 @@ class UserModel {
       password: json['password'],
       address: json['address'],
       phoneNumber: json['phoneNumber'],
-      points: json['points'],
       lastLogin: json['lastLogin'],
     );
   }
 
-  // Convert the UserModel object to a JSON string
+  /// Convert the UserModel object to a JSON string
   String toJsonString() {
     Map<String, dynamic> jsonMap = toJson();
     return jsonEncode(jsonMap);

@@ -30,6 +30,8 @@ class PagePopped extends NaviState {
 
 class HomeState extends NaviState {}
 
+class BiometricLoginState extends NaviState {}
+
 class AdminState extends NaviState {}
 
 class IntoPageState extends NaviState {}

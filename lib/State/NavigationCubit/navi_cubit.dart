@@ -1,5 +1,11 @@
+import 'package:dart_secure/dart_secure.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taskforce_hrms/Modules/Authentication/AuthPage.dart';
+import 'package:taskforce_hrms/Modules/Authentication/Login/BioDS.dart';
+
+import '../../Modules/Authentication/Login/LoginUser.dart';
 import '../../Modules/Home/HomePage.dart';
 
 part 'navi_state.dart';
@@ -20,6 +26,20 @@ class NaviCubit extends Cubit<NaviState> {
     emit(PagePushedOff(pageName: widget.toString()));
   }
 
+  void navigateToBiometricLogin(context) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const BiometricLogin()));
+    emit(BiometricLoginState());
+  }
+
+  void navigateToTempStopPage(context) {
+    tempLockUser(context,
+        afterCountNavigateTo: const Login(),
+        lockedPageMessage: "You are Locked! Please wait:",
+        time: 10);
+    emit(HomeState());
+  }
+
   void navigateToHome(context) {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -33,9 +53,9 @@ class NaviCubit extends Cubit<NaviState> {
   }
 
   void navigateToSliderLogout(context) {
-    // FirebaseAuth.instance.signOut();
-    // Navigator.pushReplacement(
-    //     context, MaterialPageRoute(builder: (context) => const IntroPages()));
+    FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const AuthPage()));
     emit(IntoPageState());
   }
 

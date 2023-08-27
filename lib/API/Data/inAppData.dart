@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
-import '../../Components/Components.dart';
+import '../../Shared/Components.dart';
 import '../../generated/assets.dart';
 
 List<String> homeMenuIcons = [
