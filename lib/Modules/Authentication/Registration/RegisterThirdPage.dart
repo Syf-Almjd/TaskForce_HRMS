@@ -1,13 +1,18 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taskforce_hrms/Shared/Components.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:taskforce_hrms/State/AppDataCubit/data_cubit.dart';
-import 'package:taskforce_hrms/State/AppEventsBloC/app_bloc.dart';
-import 'package:taskforce_hrms/State/Singleton.dart';
 
 import '../../../Models/UserModel.dart';
+import '../../../Shared/Components.dart';
 import '../../../Shared/WidgetBuilders.dart';
+import '../../../State/AppEventsBloC/app_bloc.dart';
+import '../../../State/Singleton.dart';
 
 class RegisterThirdPage extends StatefulWidget {
   final UserModel previousUserData;
@@ -22,7 +27,12 @@ class RegisterThirdPage extends StatefulWidget {
 class _RegisterThirdPageState extends State<RegisterThirdPage> {
   late UserModel userData;
   DateTime timeNow = DateTime.now();
-  var fileUser;
+  String? _imageBytes;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +60,17 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         ),
         Center(
           child: Text(
-            "Upload your Smile!",
-            style: fontPoppins(size: getWidth(10, context)),
+            "Smile!",
+            style: TextStyle(fontSize: getWidth(10, context)),
             textAlign: TextAlign.center,
           ),
         ),
+        Spacer(),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: Container(
-            height: getHeight(15, context),
+            height: getHeight(20, context),
+            width: getWidth(45, context),
             decoration: BoxDecoration(
               // borderRadius: BorderRadius.circular(500),
               shape: BoxShape.circle,
@@ -66,30 +78,17 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             ),
             child: Center(
               child: InkWell(
-                onTap: () async {},
+                onTap: () async {
+                  _pickFile();
+                },
                 child: Stack(
                   children: [
                     Center(
-                      child: (fileUser != null)
-                          ? fileChosen(fileUser, context)
+                      child: (_imageBytes != null)
+                          ? previewImage(_imageBytes, context)
                           : chooseFile(context),
                     ),
-                    Positioned(
-                      bottom: 1,
-                      left: getWidth(55, context),
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.black12),
-                        child: const Icon(
-                          Icons.mode_edit_outline_outlined,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),
@@ -97,25 +96,27 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
           ),
         ),
         const Spacer(),
+        loadButton(
+          buttonHeight: getHeight(5, context),
+          buttonWidth: getWidth(50, context),
+          textSize: getWidth(4, context),
+          textColor: Colors.blueGrey,
+          buttonElevation: 0.0,
+          onPressed: () {
+            signUser("NO_PHOTO");
+          },
+          buttonText: 'Skip',
+        ),
+        const Spacer(),
         Center(
             child: loadButton(
                 buttonText: "Start!",
                 onPressed: () {
-                  if (fileUser != null) {
-                    userData = UserModel(
-                        email: widget.previousUserData.email,
-                        password: widget.previousUserData.password,
-                        name: widget.previousUserData.name,
-                        phoneNumber: widget.previousUserData.phoneNumber,
-                        photoID: "PHOTO ENCODE",
-                        //fileuserData
-                        userID: "",
-                        lastLogin: timeNow.toString(),
-                        address: widget.previousUserData.address);
-                    BlocProvider.of<UserRegisterBloc>(context)
-                        .add(UpdateUserEvent(userData));
-                    AppCubit.get(context).userRegister(
-                        Singleton().userDataToBeUploaded, context);
+                  if (_imageBytes != null) {
+                    signUser(_imageBytes);
+                  }
+                  else {
+                    showToast('Choose a photo', SnackBarType.fail, context);
                   }
                 })),
         getCube(5, context),
@@ -123,19 +124,36 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
     );
   }
 
+  Future<void> signUser(imageBytes) async {
+    userData = UserModel(
+        email: widget.previousUserData.email,
+        password: widget.previousUserData.password,
+        name: widget.previousUserData.name,
+        phoneNumber: widget.previousUserData.phoneNumber,
+        photoID: imageBytes,
+        userID: "",
+        lastLogin: timeNow.toString(),
+        address: widget.previousUserData.address);
+    Singleton().userDataToBeUploaded = userData;
+    AppCubit
+        .get(context)
+        .saveSharedMap('currentuser', userData.toJson())
+        .then((value) =>
+        AppCubit.get(context).userRegister(
+            Singleton().userDataToBeUploaded, context));
+
+  }
+
   void _pickFile() async {
-    var pickedFile = await FilePicker.platform.pickFiles();
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 25);
     if (pickedFile != null) {
-      try {
-        var file = pickedFile!.files.first.bytes;
-        setState(() {
-          fileUser = file;
-        });
-      } catch (err) {
-        print(err);
-      }
-    } else {
-      print('No Image Selected');
+      final bytes = await pickedFile.readAsBytes();
+      Uint8List bytesUint8List = Uint8List.fromList(bytes);
+      setState(() {
+        _imageBytes = base64Encode(bytesUint8List);
+      });
     }
   }
 }

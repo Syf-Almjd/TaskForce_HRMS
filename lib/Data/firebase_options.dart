@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
     authDomain: 'taskforce-hrms.firebaseapp.com',
     storageBucket: 'taskforce-hrms.appspot.com',
     measurementId: 'G-FG9J0TDF3E',
-  );
+  ); 
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBOgRza5M_mKpA19YXZ2JoXzBRL4N_oaJk',

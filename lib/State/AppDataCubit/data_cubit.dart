@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_secure/dart_secure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -120,26 +122,38 @@ class AppCubit extends Cubit<AppStates> {
     emit(UpdatingLocalData());
     try {
       var getData = await getUserData();
-      saveSharedMap(getData.toJson());
+      saveSharedMap('currentuser',getData.toJson());
       emit(LocalDataSuccessful());
     } catch (e) {
       emit(LocalDataFailed());
     }
   }
 
-  Future<void> saveSharedMap(Map mapData) async {
+  Future<void> saveSharedMap(String mapName, Map mapData) async {
     emit(UpdatingLocalData());
+    String jsonString = jsonEncode(mapData);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      mapData.forEach((key, value) {
-        prefs.setString(key, value);
-      });
+      await prefs.setString(mapName, jsonString);
       emit(LocalDataSuccessful());
     } catch (e) {
       emit(LocalDataFailed());
     }
   }
 
+  Future<Map<String, dynamic>> getSharedMap(String mapName) async {
+    emit(GettingLocalData());
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? jsonString = prefs.getString(mapName);
+      Map<String, dynamic> savedData = jsonDecode(jsonString!);
+      emit(LocalDataSuccessful());
+      return savedData;
+    } catch (e) {
+      emit(LocalDataFailed());
+      return Future.error("LocalDataFailed");
+    }
+  }
   //Save Shared Local Data of current user
   Future<void> saveSharedData(Map data) async {
     emit(UpdatingLocalData());
@@ -152,6 +166,11 @@ class AppCubit extends Cubit<AppStates> {
     } catch (e) {
       emit(LocalDataFailed());
     }
+  }
+
+  Future<void> clearSharedAll() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
   }
 
   //Get Shared Local Data of current user as list of values
@@ -171,20 +190,6 @@ class AppCubit extends Cubit<AppStates> {
     return data;
   }
 
-  //Get Shared Local Data of current user of one value
-  Future<String?> getSharedData(String key) async {
-    emit(UpdatingLocalData());
-    String? value;
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      value = prefs.getString(key);
-      emit(LocalDataSuccessful());
-      return value;
-    } catch (e) {
-      emit(LocalDataFailed());
-    }
-    return value;
-  }
 
   /// BIOMETRIC AUTHENTICATION
 

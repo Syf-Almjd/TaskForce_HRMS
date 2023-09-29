@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -155,34 +157,83 @@ Widget socialMediaItem({
 }
 
 Widget loadButton({
+  double? buttonHeight,
+  double? buttonWidth,
+  Color? textColor,
+  double? textSize,
+  double? buttonElevation,
   required Function() onPressed,
   required String buttonText,
 }) {
   return BlocBuilder<AppCubit, AppStates>(builder: (context, state) {
     if (state is GettingData) {
       return loadingAnimation(
-          loadingType: LoadingAnimationWidget.stretchedDots(
-              color: Colors.blue, size: getWidth(15, context)));
+          loadingType: LoadingAnimationWidget.beat(
+              color: Colors.yellow, size: getWidth(10, context)));
     } else {
       return Container(
-        width: getWidth(80, context),
-        height: 60.0,
+        width: buttonWidth ?? getWidth(80, context),
+        height: buttonHeight ?? 60.0,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            elevation: 10,
+            elevation: buttonElevation ?? 10.0,
           ),
           onPressed: onPressed,
           child: Text(
             buttonText,
-            style: fontPoppins(
-                size: getWidth(10, context), textColor: Colors.white),
+            style: TextStyle(
+                fontSize: textSize ?? getWidth(10, context),
+                color: textColor ?? Colors.white),
           ),
         ),
       );
     }
   });
+}
+
+
+
+///For photo preview
+Widget previewImage(fileUser, context) {
+  fileUser = base64Decode(fileUser);
+  return Stack(
+    children: [
+      Container(
+        decoration:
+        const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipOval(
+              child: Image.memory(
+                fileUser,
+                height: getHeight(15, context),
+                width: getWidth(32, context),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ),
+      Positioned(
+        bottom: 7,
+        right: 7,
+        child: Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100), color: Colors.black12),
+          child: const Icon(
+            Icons.mode_edit_outline_outlined,
+            color: Colors.black,
+            size: 20,
+          ),
+        ),
+      ),
+    ],
+  );
 }

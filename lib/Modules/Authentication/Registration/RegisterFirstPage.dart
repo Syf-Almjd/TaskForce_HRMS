@@ -77,7 +77,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20)),
                     labelText: "Full Name",
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                   ),
                   keyboardType: TextInputType.name,
                 ),
@@ -97,7 +97,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20)),
                     labelText: "Phone Number",
-                    prefixIcon: Icon(Icons.phone),
+                    prefixIcon: const Icon(Icons.phone),
                   ),
                   keyboardType: TextInputType.number,
                 ),
@@ -114,11 +114,11 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                   },
                   controller: address,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(100),
+                    contentPadding: const EdgeInsets.all(100),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20)),
                     labelText: "Work Address",
-                    prefixIcon: Icon(Icons.place_outlined),
+                    prefixIcon: const Icon(Icons.place_outlined),
                   ),
                   keyboardType: TextInputType.streetAddress,
                 ),

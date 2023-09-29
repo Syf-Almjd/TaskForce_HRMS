@@ -8,17 +8,13 @@ import 'package:taskforce_hrms/State/AppDataCubit/data_cubit.dart';
 import 'package:taskforce_hrms/State/AppEventsBloC/app_bloc.dart';
 import 'package:taskforce_hrms/State/Observer.dart';
 
-import 'API/firebase_options.dart';
+import 'Data/firebase_options.dart';
 import 'Modules/Authentication/AuthPage.dart';
 import 'State/NavigationCubit/navi_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent, // navigation bar color
-    statusBarColor: Colors.transparent, // status bar color
-  ));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

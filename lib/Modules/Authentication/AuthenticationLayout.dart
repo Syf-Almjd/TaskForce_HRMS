@@ -27,7 +27,7 @@ class _SignLayoutState extends State<SignLayout> {
             logoContainer(context),
             Expanded(
               child: AnimatedContainer(
-                  duration: Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 100),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),

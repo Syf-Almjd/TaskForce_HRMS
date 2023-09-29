@@ -4,7 +4,8 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:taskforce_hrms/Modules/Authentication/AuthenticationLayout.dart';
 import 'package:taskforce_hrms/State/NavigationCubit/navi_cubit.dart';
 
-import '../../API/Data/inAppData.dart';
+import '../../Data/AppData/inAppData.dart';
+
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

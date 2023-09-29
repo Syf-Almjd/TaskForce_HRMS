@@ -159,21 +159,42 @@ Padding logoContainer(context) {
 }
 
 ///For photo selection
+
+///For photo selection
 Widget chooseFile(context) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Expanded(
-        child: Icon(
-          Icons.person,
-          size: getHeight(10, context),
-          color: Colors.blueGrey.shade300,
+  return Container(
+    decoration: const BoxDecoration(
+        color: Colors.amberAccent,
+        borderRadius: BorderRadius.all(Radius.circular(20))),
+    child: Stack(
+      children: [
+        ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: const Image(
+              image: AssetImage(Assets.assetsProfilePicture),
+              fit: BoxFit.fill,
+            )),
+        Positioned(
+          bottom: 25,
+          right: 25,
+          child: Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.black12),
+            child: const Icon(
+              Icons.mode_edit_outline_outlined,
+              color: Colors.black,
+              size: 20,
+            ),
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
+
 
 ///For photo preview
 Widget fileChosen(fileUser, context) {

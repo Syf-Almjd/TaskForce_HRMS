@@ -15,13 +15,13 @@ class MyBlocObserver extends BlocObserver {
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print('onError -- ${bloc.runtimeType}, $error');
     super.onError(bloc, error, stackTrace);
+    print('onError -- ${bloc.runtimeType}, $error');
   }
 
   @override
   void onClose(BlocBase bloc) {
-    print('onClose -- ${bloc.runtimeType}');
     super.onClose(bloc);
+    print('onClose -- ${bloc.runtimeType}');
   }
 }
