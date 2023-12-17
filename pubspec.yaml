@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.5
   hexcolor: ^3.0.1
   cloud_firestore: ^4.9.0
@@ -27,6 +28,13 @@ dependencies:
   dart_secure: ^0.5.0
   image_picker: ^1.0.4
   adaptive_theme: ^3.4.1
+  table_calendar: ^3.0.9
+  skeletonizer: ^0.8.0
+
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
 
 dev_dependencies:
   device_preview: ^1.1.0
@@ -44,8 +52,27 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
+  generate: true
+
 
   assets:
-    - assets/TFLogo.jpg
-    - assets/profilePicture.jpg
-    - assets/logoTransparent.png
+    - assets/components/
+    - assets/fonts/
+    - assets/homeTabs/
+    - assets/logo/
+
+
+
+  fonts:
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+
+        - asset: assets/fonts/Poppins-Medium.ttf
+          style: normal
+          weight: 400
+
+        - asset: assets/fonts/Poppins-Italic.ttf
+          style: italic
+          weight: 400

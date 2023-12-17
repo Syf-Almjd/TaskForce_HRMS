@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 
 import '../../../../domain/Models/UserModel.dart';
+import '../../../Cubits/navigation_cubit/navi_cubit.dart';
+import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
 import '../../../Shared/WidgetBuilders.dart';
-import '../../Cubits/appNavi_cubit/navi_cubit.dart';
-import '../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../Login/LoginUser.dart';
 
 class RegisterSecondPage extends StatefulWidget {

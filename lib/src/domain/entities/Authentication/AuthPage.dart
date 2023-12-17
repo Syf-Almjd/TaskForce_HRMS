@@ -1,9 +1,11 @@
 import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/HomePage.dart';
 
 import '../../../data/local/inAppData.dart';
-import '../Cubits/appNavi_cubit/navi_cubit.dart';
+import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';
 import 'AuthenticationLayout.dart';
 
 class AuthPage extends StatelessWidget {
@@ -12,7 +14,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return userAuthMonitor(
-        authenticatedUserPage: const SignLayout(),
+        authenticatedUserPage: const HomePage(),
         unAuthenticatedUserPage: IntroductionScreen(
           globalBackgroundColor: Colors.white,
           pages: listPagesViewModel(context),
@@ -32,7 +34,7 @@ class AuthPage extends StatelessWidget {
           dotsDecorator: DotsDecorator(
             size: const Size.square(10.0),
             activeSize: const Size(20.0, 10.0),
-            activeColor: Colors.orangeAccent,
+            activeColor: AppColors.primaryColor,
             color: Colors.black26,
             spacing: const EdgeInsets.symmetric(horizontal: 3.0),
             activeShape: RoundedRectangleBorder(

@@ -2,14 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domain/Models/UserModel.dart';
-import '../../../Shared/Singleton.dart';
+import '../../../domain/Models/UserModel.dart';
+import '../../Shared/Singleton.dart';
 
 part 'tabsNavigation_event.dart';
 part 'tabsNavigation_state.dart';
 
 class UserRegisterBloc extends Bloc<UserEvent, UserState> {
-  UserRegisterBloc() : super(UserRegisterState(UserModel.empty())) {
+  UserRegisterBloc() : super(UserRegisterState(UserModel.loadingUser())) {
     on<UpdateUserEvent>((event, emit) {
       Singleton().userDataToBeUploaded = event.newUser;
       emit(UserRegisterState(event.newUser));

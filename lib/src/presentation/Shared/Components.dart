@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
 
 import '../../config/utils/managers/app_assets.dart';
 
@@ -158,54 +160,6 @@ Padding logoContainer(context) {
   );
 }
 
-///For photo selection
-
-///For photo selection
-Widget chooseFile(context) {
-  return Container(
-    decoration: const BoxDecoration(
-        color: Colors.amberAccent,
-        borderRadius: BorderRadius.all(Radius.circular(20))),
-    child: Stack(
-      children: [
-        ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: const Image(
-              image: AssetImage(AppAssets.assetsProfilePicture),
-              fit: BoxFit.fill,
-            )),
-        Positioned(
-          bottom: 25,
-          right: 25,
-          child: Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.black12),
-            child: const Icon(
-              Icons.mode_edit_outline_outlined,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-///For photo preview
-Widget fileChosen(fileUser, context) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Image.memory(fileUser),
-    ],
-  );
-}
-
 //Show a toast
 void showToast(String text, SnackBarType type, context) => IconSnackBar.show(
       context: context,
@@ -223,4 +177,23 @@ validateForm(
   } else {
     return false;
   }
+}
+
+AppLocalizations getAppAssets(context) {
+  return AppLocalizations.of(context)!;
+}
+
+String getDateTimeToDay(String dateString) {
+  DateTime date = DateTime.parse(dateString).toLocal();
+  String time = "${date.hour}:${date.minute}";
+  if (date.day == DateTime.now().day) {
+    return "Today, at $time";
+  }
+  if (date.day == DateTime.now().day + 1) {
+    return "Tomorrow, at $time";
+  }
+  if (date.day == DateTime.now().day - 1) {
+    return "Yesterday, at $time";
+  }
+  return ("${date.toUtc().day},  ${date.toUtc().month.dateMonthName.substring(0, 3)}. at: $time");
 }

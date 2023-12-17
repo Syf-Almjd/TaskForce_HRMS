@@ -8,5 +8,5 @@ class Singleton {
     return _singleton;
   }
 
-  Singleton._internal() : userDataToBeUploaded = UserModel.empty();
+  Singleton._internal() : userDataToBeUploaded = UserModel.loadingUser();
 }

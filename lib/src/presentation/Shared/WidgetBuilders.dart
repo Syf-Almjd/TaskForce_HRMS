@@ -4,9 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
+import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cubit.dart';
+import 'package:taskforce_hrms/src/presentation/test.dart';
 
+import '../../config/utils/managers/app_assets.dart';
+import '../../config/utils/managers/app_enums.dart';
 import '../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../data/remote/RemoteData_cubit/RemoteData_cubit.dart';
+import '../../domain/Models/UserModel.dart';
+import '../Modules/Tabs/Attendance/attendance_page.dart';
+import '../Modules/Tabs/Builders/in_tab_button.dart';
+import '../Modules/Tabs/ELeave/eleave_page.dart';
+import '../Modules/Tabs/Events/events_page.dart';
+import '../Modules/Tabs/Profile/profile_page.dart';
+import '../Modules/Tabs/announcemnets/announcements_page.dart';
 import 'Components.dart';
 
 ///Widget List Builder
@@ -166,17 +181,18 @@ Widget loadButton({
   required Function() onPressed,
   required String buttonText,
 }) {
-  return BlocBuilder<LocalDataCubit, LocalDataState>(builder: (context, state) {
+  return BlocBuilder<RemoteDataCubit, RemoteAppStates>(
+      builder: (context, state) {
     if (state is GettingData) {
       return loadingAnimation(
           loadingType: LoadingAnimationWidget.beat(
-              color: Colors.yellow, size: getWidth(10, context)));
+              color: AppColors.primaryColor, size: getWidth(10, context)));
     } else {
       return Container(
         width: buttonWidth ?? getWidth(80, context),
         height: buttonHeight ?? 60.0,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: ElevatedButton(
+        child: FilledButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
@@ -197,42 +213,204 @@ Widget loadButton({
 }
 
 ///For photo preview
-Widget previewImage(fileUser, context) {
+Widget previewImage(
+    {double padding = 5.0,
+    Color backgroundColor = Colors.transparent,
+    double photoRadius = 15.0,
+    required fileUser,
+    bool editable = false,
+    required context}) {
+  if (fileUser == AppConstants.noPhotoUser) {
+    fileUser = UserModel.loadingUser().photoID;
+  }
   fileUser = base64Decode(fileUser);
   return Stack(
     children: [
       Container(
-        decoration:
-            const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipOval(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: backgroundColor,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(padding),
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(photoRadius),
               child: Image.memory(
                 fileUser,
-                height: getHeight(15, context),
-                width: getWidth(32, context),
                 fit: BoxFit.cover,
               ),
             ),
           ),
         ),
       ),
-      Positioned(
-        bottom: 7,
-        right: 7,
-        child: Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100), color: Colors.black12),
-          child: const Icon(
-            Icons.mode_edit_outline_outlined,
-            color: Colors.black,
-            size: 20,
+      Visibility(
+        visible: editable,
+        replacement: Container(),
+        child: Positioned(
+          bottom: 7,
+          right: 7,
+          child: Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.black12),
+            child: const Icon(
+              Icons.mode_edit_outline_outlined,
+              color: Colors.black,
+              size: 20,
+            ),
           ),
         ),
       ),
     ],
   );
+}
+
+Widget getSkeletonLoading({required PostsType type}) {
+  return Builder(
+    builder: (context) {
+      final stateLocalData = context.watch<LocalDataCubit>().state;
+      final stateRemoteData = context.watch<RemoteDataCubit>().state;
+      if (stateLocalData is GettingLocalData ||
+          stateRemoteData is GettingData) {
+        return Wrap(
+            runSpacing: 50,
+            children: List.generate(10, (index) {
+              return type == PostsType.announcements
+                  ? Image.asset(AppAssets.appAnnouncementsLoading)
+                  : Image.asset(AppAssets.appEventsLoading);
+            }));
+      } else {
+        return Container();
+      }
+    },
+  );
+}
+
+Widget getFeaturesButtons(
+    {required List<Enum> featuresList, required BuildContext context}) {
+  return ListView(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    children: [
+      Text(
+        getAppAssets(context).features,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.greyDark,
+            fontSize: getWidth(5, context)),
+      ),
+      getCube(2, context),
+      SizedBox(
+        width: getWidth(100, context),
+        child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: getWidth(30, context)),
+            itemCount: featuresList.length,
+            itemBuilder: (context, index) {
+              return InTabButton(
+                buttonName: featuresList[index].name.toUpperCase(),
+                naviWidget: featuresList[index].getFeatureButtonWidget(),
+              );
+            }),
+      ),
+    ],
+  );
+}
+
+Widget getAppCalender({
+  required BuildContext context,
+  required List<DateTime> selectedDates,
+  required DateTime firstDay,
+}) {
+  return Column(
+    children: [
+      Text(
+        AppConstants.inTapCalenderTitle,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.greyDark,
+            fontSize: getWidth(5, context)),
+      ),
+      TableCalendar(
+          onFormatChanged: (format) {},
+          calendarStyle:
+              const CalendarStyle(markerSize: 10, markersAutoAligned: true),
+          eventLoader: (day) {
+            for (var dateElement in selectedDates) {
+              if (day == dateElement) {
+                return [dateElement];
+              }
+            }
+            return [];
+          },
+          onDaySelected: (date, date2) {
+            if (selectedDates.contains(date)) {
+              // ToDO make page to display u were absent if ther eis mistakes contact bla bla
+              NaviCubit.get(context).navigate(context, const TestPage());
+            } else {
+              NaviCubit.get(context).navigate(context, const TestPage());
+            }
+          },
+          focusedDay: DateTime.now(),
+          firstDay: firstDay,
+          lastDay: DateTime.now()),
+    ],
+  );
+}
+
+///For photo selection
+Widget chooseFile(context) {
+  return Container(
+    decoration: const BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.all(Radius.circular(20))),
+    child: Stack(
+      children: [
+        ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: const Image(
+              image: AssetImage(AppAssets.assetsProfilePicture),
+              fit: BoxFit.fill,
+            )),
+        Positioned(
+          bottom: 25,
+          right: 25,
+          child: Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.black12),
+            child: const Icon(
+              Icons.mode_edit_outline_outlined,
+              color: Colors.black,
+              size: 20,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget getAppTabByIndex(index) {
+  switch (index) {
+    case 0:
+      return const AttendancePage();
+    case 1:
+      return const EleavePage();
+    case 2:
+      return const AnnouncementsPage();
+    case 3:
+      return const EventsPage();
+    case 4:
+      return const ProfilePage();
+    default:
+      return const AttendancePage();
+  }
 }

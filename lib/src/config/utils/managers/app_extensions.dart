@@ -1,19 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/HomePage.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/eleave_page.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Profile/profile_page.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Tabs/announcemnets/announcements_page.dart';
 
+import '../../../presentation/Modules/Tabs/Events/events_page.dart';
+import '../../../presentation/test.dart';
 import 'app_enums.dart';
 
-extension AppBarHeaderExtension on AppBarHeaders {
-  String getString() {
+extension AppTab on AppTabsHeaders {
+  Widget getTabScreen() {
     switch (this) {
-      case AppBarHeaders.home:
-        return 'Home';
-      case AppBarHeaders.aboutMe:
-        return 'About me';
-      case AppBarHeaders.projects:
-        return 'Projects';
-      case AppBarHeaders.contact:
-        return 'Contact';
+      case AppTabsHeaders.attendance:
+        return const HomePage();
+      case AppTabsHeaders.eleave:
+        return const EleavePage();
+      case AppTabsHeaders.announcements:
+        return const AnnouncementsPage();
+      case AppTabsHeaders.events:
+        return const EventsPage();
+      case AppTabsHeaders.profile:
+        return const ProfilePage();
     }
+  }
+}
+
+extension FeatureButtonsWidget on Enum {
+  Widget getFeatureButtonWidget() {
+    switch (this) {
+      case AttendanceTabButtons.attend:
+        return const TestPage();
+      case AttendanceTabButtons.history:
+        return const TestPage();
+      case EleaveTabButtons.request:
+        return const TestPage();
+      case EleaveTabButtons.history:
+        return const TestPage();
+      default:
+        return const TestPage();
+    }
+  }
+}
+
+extension StringExtension on String {
+  String toCapitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }
 
@@ -51,6 +82,39 @@ extension DeviceTypeExtension on DeviceType {
         return 1200;
       case DeviceType.extraLargeTV:
         return 3840; // any number more than 1200
+    }
+  }
+}
+
+extension MonthName on int {
+  String get dateMonthName {
+    switch (this) {
+      case 1:
+        return 'January';
+      case 2:
+        return 'February';
+      case 3:
+        return 'March';
+      case 4:
+        return 'April';
+      case 5:
+        return 'May';
+      case 6:
+        return 'June';
+      case 7:
+        return 'July';
+      case 8:
+        return 'August';
+      case 9:
+        return 'September';
+      case 10:
+        return 'October';
+      case 11:
+        return 'November';
+      case 12:
+        return 'December';
+      default:
+        return '';
     }
   }
 }

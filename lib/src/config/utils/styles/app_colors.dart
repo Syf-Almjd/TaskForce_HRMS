@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  static Color white = const Color(0xffffffff);
-  static Color grey = const Color(0xffF5F5F5);
-  static Color greyDark = const Color(0xff898989);
+  static const Color primaryColor = Color(0x993665FF); //0xff4e4edd
+  static const Color lowPriority = Color(0xffb8a4ff);
 
-  static Color lowPriority = const Color(0xff848191);
-  static Color primaryColor = const Color(0x9936E2FF); //0xff4e4edd
-  static Color secondaryColor = const Color(0xff282162);
-  static Color darkColor = const Color(0xff000036);
-  static Color scaffoldColor = const Color(0xff1A1A29);
-  static Color appBarColor = const Color(0xff9999d4);
-  static Color primaryLight = const Color(0xff31313F);
-  static Color greenColor = const Color(0xf461df25);
-  static Color redColor = const Color(0xf4df2535);
+  static const Color secondaryColor = Color(0xff3e34af);
+  static const Color darkColor = Color(0xff000036);
+  static const Color scaffoldColor = Color(0x996889F5);
+  static const Color appBarColor = Color(0xff2e2eff);
+  static const Color primaryLight = Color(0xffc5d1ff);
+  static const Color greenColor = Color(0xf461df25);
+  static const Color redColor = Color(0xf4df2535);
+  static const Color white = Color(0xffffffff);
+  static const Color grey = Color(0xffF5F5F5);
+  static const Color greyDark = Color(0xff7a7a7a);
 }
 
-extension HexColor on Color {
+extension GetHexColor on Color {
   static Color fromHex(String hexColorString) {
     hexColorString = hexColorString.replaceAll('#', '');
     if (hexColorString.length == 6) {

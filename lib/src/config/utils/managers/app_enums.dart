@@ -1,6 +1,21 @@
-enum AppBarHeaders { home, aboutMe, projects, contact }
+enum AppTabsHeaders { attendance, eleave, announcements, events, profile }
 
-enum AppBarHeadersAxis { horizontal, vertical }
+enum AppAxis { horizontal, vertical }
+
+enum AttendanceTabButtons {
+  attend,
+  history,
+  assets,
+  assets1,
+  assets2,
+}
+
+enum EleaveTabButtons {
+  request,
+  history,
+}
+
+var appLanguages = (arabic: "ar", english: "en", indonesian: "id");
 
 enum DeviceType {
   mobile,
@@ -9,3 +24,5 @@ enum DeviceType {
   largeScreenDesktop,
   extraLargeTV
 }
+
+enum PostsType { events, announcements }

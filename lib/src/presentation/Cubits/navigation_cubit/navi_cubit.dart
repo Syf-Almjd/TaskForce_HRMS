@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../Authentication/AuthPage.dart';
-import '../../Authentication/Login/BioDS.dart';
-import '../../Authentication/Login/LoginUser.dart';
-import '../../Home/HomePage.dart';
+import '../../../domain/entities/Authentication/AuthPage.dart';
+import '../../Modules/Authentication/Login/BioDS.dart';
+import '../../Modules/Authentication/Login/LoginUser.dart';
+import '../../Modules/Home/HomePage.dart';
 
 part 'navi_state.dart';
 

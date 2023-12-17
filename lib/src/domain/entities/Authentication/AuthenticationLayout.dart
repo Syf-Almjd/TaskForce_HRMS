@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Singleton.dart';
 
-import '../../Shared/Components.dart';
-import '../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
-import 'Login/LoginUser.dart';
-import 'Registration/RegisterFirstPage.dart';
-import 'Registration/RegisterSecondPage.dart';
-import 'Registration/RegisterThirdPage.dart';
+import '../../../presentation/Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
+import '../../../presentation/Modules/Authentication/Login/LoginUser.dart';
+import '../../../presentation/Modules/Authentication/Registration/RegisterFirstPage.dart';
+import '../../../presentation/Modules/Authentication/Registration/RegisterSecondPage.dart';
+import '../../../presentation/Modules/Authentication/Registration/RegisterThirdPage.dart';
+import '../../../presentation/Shared/Components.dart';
 
 class SignLayout extends StatefulWidget {
   const SignLayout({super.key});
@@ -21,7 +22,7 @@ class _SignLayoutState extends State<SignLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.blueGrey.shade300),
+        decoration: const BoxDecoration(color: AppColors.scaffoldColor),
         child: Column(
           children: [
             logoContainer(context),

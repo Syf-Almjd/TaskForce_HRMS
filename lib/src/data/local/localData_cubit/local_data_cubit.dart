@@ -4,6 +4,7 @@ import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_enums.dart';
 
 import '../../remote/RemoteData_cubit/RemoteData_cubit.dart';
 
@@ -55,16 +56,27 @@ class LocalDataCubit extends Cubit<LocalDataState> {
   }
 
   //Save Shared Local Data of current user
-  Future<void> saveSharedData(Map data) async {
+  Future<void> saveSharedData(String key, String data) async {
     emit(UpdatingLocalData());
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      data.forEach((key, value) {
-        prefs.setString(key, value);
-      });
+      await prefs.setString(key, data);
       emit(LocalDataSuccessful());
     } catch (e) {
       emit(LocalDataFailed());
+    }
+  }
+
+  Future<String> getSharedData(String key) async {
+    emit(GettingLocalData());
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String savedData = prefs.getString(key) ?? appLanguages.english;
+      emit(LocalDataSuccessful());
+      return savedData;
+    } catch (e) {
+      emit(LocalDataFailed());
+      return appLanguages.english;
     }
   }
 

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
+import '../../../Cubits/navigation_cubit/navi_cubit.dart';
 import '../../../Shared/Components.dart';
-import '../../Cubits/appNavi_cubit/navi_cubit.dart';
 
 class BiometricLogin extends StatelessWidget {
   const BiometricLogin({super.key});

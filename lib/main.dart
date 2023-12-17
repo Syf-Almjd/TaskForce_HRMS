@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskforce_hrms/src/data/remote/firebase_options.dart';
-import 'package:taskforce_hrms/src/domain/Observer.dart';
+import 'package:taskforce_hrms/src/domain/entities/Observer.dart';
 
 import 'src/app.dart';
 

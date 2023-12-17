@@ -9,10 +9,10 @@ import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit
 
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../domain/Models/UserModel.dart';
+import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
 import '../../../Shared/Singleton.dart';
 import '../../../Shared/WidgetBuilders.dart';
-import '../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 
 class RegisterThirdPage extends StatefulWidget {
   final UserModel previousUserData;
@@ -62,11 +62,12 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         Center(
           child: Text(
             "Smile!",
-            style: TextStyle(fontSize: getWidth(10, context)),
+            style:
+                TextStyle(color: Colors.black, fontSize: getWidth(10, context)),
             textAlign: TextAlign.center,
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Container(
@@ -86,7 +87,10 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
                   children: [
                     Center(
                       child: (_imageBytes != null)
-                          ? previewImage(_imageBytes, context)
+                          ? previewImage(
+                              context: context,
+                              fileUser: _imageBytes,
+                              editable: true)
                           : chooseFile(context),
                     ),
                   ],

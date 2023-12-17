@@ -2,9 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_enums.dart';
+import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
 
 import '../../../domain/Models/UserModel.dart';
-import '../../../presentation/Modules/Cubits/appNavi_cubit/navi_cubit.dart';
+import '../../../domain/Models/announcementModel.dart';
+import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';
 import '../../../presentation/Shared/Components.dart';
 import '../../local/localData_cubit/local_data_cubit.dart';
 
@@ -34,7 +38,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
 
     try {
       final userSnapshot = await FirebaseFirestore.instance
-          .collection("users")
+          .collection(AppConstants.usersCollection)
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
@@ -62,9 +66,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .then(
               (value) => LocalDataCubit.get(context).updateSharedUser(context));
       showToast("Successful Login", SnackBarType.save, context);
-
       emit(GetDataSuccessful());
-
       NaviCubit.get(context).navigateToHome(context);
     } on FirebaseAuthException {
       showToast("Successful Error", SnackBarType.fail, context);
@@ -82,20 +84,58 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .then((value) =>
               userModel.userID = FirebaseAuth.instance.currentUser!.uid);
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection(AppConstants.usersCollection)
           .doc(userModel.userID)
-          .set(userModel.toJson())
-          .whenComplete(
-              () => LocalDataCubit.get(context).updateSharedUser(context));
-      showToast("Successful Login", SnackBarType.save, context);
-
+          .set(userModel.toJson());
       NaviCubit.get(context).navigateToHome(context);
-
       emit(GetDataSuccessful());
     } catch (error) {
-      showToast("Successful Error", SnackBarType.fail, context);
-
+      showToast("Error in RegisterMethod $error", SnackBarType.fail, context);
       emit(GetDataError());
+    }
+  }
+
+  Future<List<Object>> getPostsData(PostsType postsType) async {
+    emit(GettingData());
+
+    List<Object> data = [];
+    String collectionName = "";
+    switch (postsType) {
+      case PostsType.announcements:
+        collectionName = AppConstants.announcementDataCollection;
+        data.cast<AnnouncementModel>().toList();
+        break;
+      case PostsType.events:
+        collectionName = AppConstants.eventsDataCollection;
+        data.cast<EventModel>().toList();
+        break;
+      default:
+        collectionName = AppConstants.announcementDataCollection;
+        data.cast<AnnouncementModel>().toList();
+    }
+
+    try {
+      final querySnapshot =
+          await FirebaseFirestore.instance.collection(collectionName).get();
+
+      for (var element in querySnapshot.docs) {
+        final documentSnapshot = await FirebaseFirestore.instance
+            .collection(collectionName)
+            .doc(element.id)
+            .get();
+
+        if (documentSnapshot.exists && postsType == PostsType.announcements) {
+          data.add(AnnouncementModel.fromJson(documentSnapshot.data()!));
+        }
+        if (documentSnapshot.exists && postsType == PostsType.events) {
+          data.add(EventModel.fromJson(documentSnapshot.data()!));
+        }
+      }
+      emit(GetDataSuccessful());
+      return data;
+    } on FirebaseException {
+      emit(GetDataError());
+      rethrow;
     }
   }
 }
