@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -177,10 +176,6 @@ validateForm(
   } else {
     return false;
   }
-}
-
-AppLocalizations getAppAssets(context) {
-  return AppLocalizations.of(context)!;
 }
 
 String getDateTimeToDay(String dateString) {

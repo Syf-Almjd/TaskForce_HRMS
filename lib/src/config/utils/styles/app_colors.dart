@@ -14,6 +14,8 @@ abstract class AppColors {
   static const Color white = Color(0xffffffff);
   static const Color grey = Color(0xffF5F5F5);
   static const Color greyDark = Color(0xff7a7a7a);
+  static const Color blackLight = Color(0xff3a3a3a);
+  static const Color blackDark = Color(0xff000000);
 }
 
 extension GetHexColor on Color {

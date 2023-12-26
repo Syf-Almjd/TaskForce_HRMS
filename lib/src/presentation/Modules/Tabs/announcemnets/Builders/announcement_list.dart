@@ -21,71 +21,70 @@ class AnnouncementList extends StatefulWidget {
 class _AnnouncementListState extends State<AnnouncementList> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: getWidth(100, context),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: AppColors.primaryColor),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                previewImage(
-                    editable: false,
-                    context: context,
-                    fileUser: widget.announcementModel.image),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: getWidth(50, context),
-                        child: Text(
-                          widget.announcementModel.title.toCapitalize(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: AppColors.darkColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: getWidth(5, context),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        widget.announcementModel.date,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Container(
+        width: getWidth(100, context),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: AppColors.primaryColor),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              previewImage(
+                  editable: false,
+                  context: context,
+                  fileUser: widget.announcementModel.image),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: getWidth(50, context),
+                      child: Text(
+                        widget.announcementModel.title.toCapitalize(),
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: AppColors.greyDark,
-                          fontWeight: FontWeight.normal,
-                          fontSize: getWidth(4, context),
+                          color: AppColors.darkColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: getWidth(5, context),
                         ),
                       ),
-                      Text(widget.announcementModel.description,
-                          style: TextStyle(
-                            color: AppColors.darkColor,
-                            fontWeight: FontWeight.normal,
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: getWidth(3, context),
-                          ),
-                          maxLines: 2,
-                          textAlign: TextAlign.start),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      widget.announcementModel.date,
+                      style: TextStyle(
+                        color: AppColors.greyDark,
+                        fontWeight: FontWeight.normal,
+                        fontSize: getWidth(4, context),
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: FilledButton(
-                      onPressed: () {
-                        AppLocalizationCubit.get(context).changeAppLanguage(
-                            context,
-                            setLanguage: appLanguages.arabic);
-                      },
-                      child: Text(getAppAssets(context).read)),
-                )
-              ],
-            ),
+              ),
+              Text(widget.announcementModel.description,
+                  style: TextStyle(
+                    color: AppColors.darkColor,
+                    fontWeight: FontWeight.normal,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: getWidth(3, context),
+                  ),
+                  maxLines: 2,
+                  textAlign: TextAlign.start),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FilledButton(
+                    onPressed: () {
+                      AppLocalizationCubit.get(context).changeAppLanguage(
+                          context,
+                          setLanguage: appLanguages.arabic);
+                    },
+                    child: Text(context.getAppAssets.read)),
+              ),
+            ],
           ),
         ),
         // Divider(
@@ -94,8 +93,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
         //   thickness: 1,
         //   color: AppColors.lowPriority.withOpacity(.3),
         // ),
-        getCube(1, context)
-      ],
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class AppConstants {
   static const String appTitle = "TASKFORCE HR";
   static List<String> homeTabs = [
@@ -7,7 +9,6 @@ abstract class AppConstants {
     "Events",
     "Profile"
   ];
-  static String inTapTitle = "Features:";
   static String inTapCalenderTitle = "Calender:";
   static const String appFontFamily = "poppins";
   static const String savedAppLanguage = "savedAppLanguage";
@@ -20,4 +21,19 @@ abstract class AppConstants {
   static String eventsCollection = "events";
   static String eventsDataCollection = "Tabs/events/posts";
   static String noPhotoUser = "NOPHOTO";
+
+  static List<String> profileCardsName = [
+    "Modify Account",
+    "Notifications",
+    "Report a problem",
+    "Share",
+    "Logout"
+  ];
+  static List<IconData> profileCardsIcons = [
+    Icons.edit_attributes_outlined,
+    Icons.notifications_active_outlined,
+    Icons.report_problem_outlined,
+    Icons.offline_share,
+    Icons.door_back_door_outlined,
+  ];
 }

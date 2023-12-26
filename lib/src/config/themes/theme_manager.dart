@@ -10,6 +10,13 @@ ThemeData getApplicationTheme() {
   return ThemeData.light().copyWith(
     colorScheme:
         const ColorScheme.light().copyWith(primary: AppColors.primaryColor),
+
+    //App Transition
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    }),
+
     // // main colors of the app
     primaryColor: AppColors.primaryColor,
     shadowColor: AppColors.lowPriority,

@@ -197,7 +197,7 @@ Widget loadButton({
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            elevation: buttonElevation ?? 10.0,
+            elevation: buttonElevation ?? 0.0,
           ),
           onPressed: onPressed,
           child: Text(
@@ -296,7 +296,7 @@ Widget getFeaturesButtons(
     physics: const NeverScrollableScrollPhysics(),
     children: [
       Text(
-        getAppAssets(context).features,
+        context.getAppAssets.features,
         style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.greyDark,
@@ -360,6 +360,23 @@ Widget getAppCalender({
           firstDay: firstDay,
           lastDay: DateTime.now()),
     ],
+  );
+}
+
+Widget simpleCard({required String title, required IconData icon}) {
+  return Card(
+    margin: const EdgeInsets.all(10),
+    elevation: 1,
+    color: Colors.transparent,
+    borderOnForeground: false,
+    child: ListTile(
+        splashColor: Colors.transparent,
+        tileColor: Colors.transparent,
+        title: Text(
+          title,
+          style: const TextStyle(color: AppColors.darkColor),
+        ),
+        leading: Icon(icon)),
   );
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taskforce_hrms/src/presentation/Modules/Home/HomePage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/eleave_page.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Profile/profile_page.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/announcemnets/announcements_page.dart';
@@ -40,6 +41,12 @@ extension FeatureButtonsWidget on Enum {
         return const TestPage();
     }
   }
+}
+
+extension AppContext on BuildContext {
+  get getAppAssets => AppLocalizations.of(this);
+  // get getLocalData => LocalDataCubit.get(this); created an method on Local Class
+  // get getRemoteData => RemoteDataCubit.get(this); created an method on Remote Class
 }
 
 extension StringExtension on String {

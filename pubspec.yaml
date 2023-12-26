@@ -76,3 +76,5 @@ flutter:
         - asset: assets/fonts/Poppins-Italic.ttf
           style: italic
           weight: 400
+flutter_intl:
+  enabled: true

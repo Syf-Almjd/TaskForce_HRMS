@@ -1,6 +1,7 @@
 {
   "read": "Read",
   "location": "Location",
-  "features": "Features"
-
+  "features": "Features",
+  "loading": "Loading..",
+  "name": "Name"
 }

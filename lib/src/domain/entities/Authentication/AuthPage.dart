@@ -2,7 +2,7 @@ import 'package:dart_secure/dart_secure.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
-import 'package:taskforce_hrms/src/presentation/Modules/Home/HomePage.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
 
 import '../../../data/local/inAppData.dart';
 import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';

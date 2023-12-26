@@ -4,7 +4,7 @@ import '../../../../config/utils/managers/app_enums.dart';
 import '../../../../data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 import '../../../../domain/Models/eventModel.dart';
 import '../../../Shared/WidgetBuilders.dart';
-import 'Builders/EventsList.dart';
+import 'Builders/events_list.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({Key? key}) : super(key: key);
@@ -40,14 +40,12 @@ class _EventsPageState extends State<EventsPage> {
     return Visibility(
         visible: loaded,
         replacement: getSkeletonLoading(type: PostsType.events),
-        child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: eventsList.length,
-          itemBuilder: (context, index) {
-            return EventsList(
-              event: eventsList[index],
-            );
-          },
+        child: Column(
+          children: List.generate(
+              eventsList.length,
+              (index) => EventsList(
+                    event: eventsList[index],
+                  )),
         ));
   }
 }

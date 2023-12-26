@@ -10,8 +10,7 @@ class AttendancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var tabsList = AttendanceTabButtons.values;
-    return ListView(
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
       children: [
         getFeaturesButtons(featuresList: tabsList, context: context),
         getCube(4, context),

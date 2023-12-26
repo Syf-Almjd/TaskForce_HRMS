@@ -1,5 +1,7 @@
 {
   "read": "قراء",
   "location": "مكان",
-  "features": "الخطوات"
+  "features": "الخطوات",
+  "loading": "تحميل",
+  "name": "تحميل"
 }

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/Authentication/AuthPage.dart';
 import '../../Modules/Authentication/Login/BioDS.dart';
 import '../../Modules/Authentication/Login/LoginUser.dart';
-import '../../Modules/Home/HomePage.dart';
+import '../../Modules/Home/home_page.dart';
 
 part 'navi_state.dart';
 

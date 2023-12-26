@@ -14,7 +14,7 @@ List<PageViewModel> listPagesViewModel(context) => [
         body: 'Confidentiality',
         image: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(50.0),
             child: Image.asset(AppAssets.assetsTFLogo),
           ),
         ),

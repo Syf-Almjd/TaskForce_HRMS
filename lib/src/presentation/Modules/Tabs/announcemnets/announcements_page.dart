@@ -23,27 +23,39 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     getData();
   }
 
-  getData() async {
-    List<AnnouncementModel> data = await RemoteDataCubit.get(context)
-        .getPostsData(PostsType.announcements)
-        .then((value) => value.cast<AnnouncementModel>().toList());
-    setState(() {
-      announcementList = data;
-      loaded = true;
-    });
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  Future<void> getData() async {
+    try {
+      List<AnnouncementModel> data = await RemoteDataCubit.get(context)
+          .getPostsData(PostsType.announcements)
+          .then((value) => value.cast<AnnouncementModel>().toList());
+      if (mounted) {
+        setState(() {
+          announcementList = data;
+          loaded = true;
+        });
+      }
+    } catch (error) {
+      // Handle errors, e.g., log or display an error message
+      print("Error fetching data: $error");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
-        visible: loaded,
-        replacement: getSkeletonLoading(type: PostsType.announcements),
-        child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: announcementList.length,
-          itemBuilder: (context, index) {
-            return AnnouncementList(announcementModel: announcementList[index]);
-          },
-        ));
+      visible: loaded,
+      replacement: getSkeletonLoading(type: PostsType.announcements),
+      child: Column(
+        children: List.generate(
+            announcementList.length,
+            (index) =>
+                AnnouncementList(announcementModel: announcementList[index])),
+      ),
+    );
   }
 }
