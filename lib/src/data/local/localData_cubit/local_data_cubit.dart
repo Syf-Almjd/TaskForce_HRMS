@@ -6,6 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_enums.dart';
 
+import '../../../config/utils/managers/app_constants.dart';
+import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';
+import '../../../presentation/Shared/Components.dart';
 import '../../remote/RemoteData_cubit/RemoteData_cubit.dart';
 
 part 'local_data_state.dart';
@@ -31,8 +34,8 @@ class LocalDataCubit extends Cubit<LocalDataState> {
 
   Future<void> saveSharedMap(String mapName, Map mapData) async {
     emit(UpdatingLocalData());
-    String jsonString = jsonEncode(mapData);
     try {
+      String jsonString = jsonEncode(mapData);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(mapName, jsonString);
       emit(LocalDataSuccessful());
@@ -119,6 +122,24 @@ class LocalDataCubit extends Cubit<LocalDataState> {
     } else {
       emit(LocalDataFailed());
       return false;
+    }
+  }
+
+  Future<void> getAttendanceStatus(context) async {
+    emit(GettingLocalData());
+    try {
+      String userName = await LocalDataCubit.get(context)
+          .getSharedData(AppConstants.userLocalAttendance);
+      if (DateTime.now().toUtc().day ==
+          DateTime.parse(userName).toLocal().toUtc().day) {
+        showToast("Thank you! Attendance was recorded previously.", Colors.blue,
+            context);
+        NaviCubit.get(context).pop(context);
+      }
+      emit(LocalDataSuccessful());
+    } catch (e) {
+      //No Saved Attendance
+      return;
     }
   }
 }

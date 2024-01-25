@@ -23,8 +23,10 @@ class _SectionsIconState extends State<SectionsIcon> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      enableFeedback: false,
       hoverColor: Colors.transparent,
       splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: widget.onTap,
       child: Padding(
         padding: const EdgeInsets.all(8.0),

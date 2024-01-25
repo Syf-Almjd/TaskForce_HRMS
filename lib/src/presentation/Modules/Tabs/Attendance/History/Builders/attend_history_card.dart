@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
-import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
+import 'package:taskforce_hrms/src/domain/Models/attendanceModel.dart';
 
-import '../../../../../config/utils/styles/app_colors.dart';
-import '../../../../Shared/Components.dart';
-import '../../../../Shared/WidgetBuilders.dart';
+import '../../../../../../config/utils/styles/app_colors.dart';
+import '../../../../../Shared/Components.dart';
+import '../../../../../Shared/WidgetBuilders.dart';
 
-class EventsList extends StatelessWidget {
-  final EventModel event;
-  const EventsList({super.key, required this.event});
+class AttendanceHistoryCard extends StatelessWidget {
+  final AttendanceModel attendanceRecord;
+  const AttendanceHistoryCard({super.key, required this.attendanceRecord});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(20),
       child: Container(
         width: getWidth(100, context),
         decoration: BoxDecoration(
@@ -36,7 +35,7 @@ class EventsList extends StatelessWidget {
                     // backgroundColor: AppColors.primaryColor,
                     editable: false,
                     context: context,
-                    fileUser: event.image),
+                    fileUser: attendanceRecord.userPhoto),
               ),
             ),
             Padding(
@@ -47,7 +46,7 @@ class EventsList extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      event.title.toCapitalize(),
+                      attendanceRecord.dateTime,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: AppColors.darkColor,
@@ -59,7 +58,7 @@ class EventsList extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      event.description,
+                      attendanceRecord.userCity,
                       style: TextStyle(
                         color: AppColors.darkColor,
                         fontWeight: FontWeight.normal,
@@ -81,44 +80,19 @@ class EventsList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      getDateTimeToDay(event.date),
+                      getDateTimeToDay(attendanceRecord.dateTime),
                       style: TextStyle(
                         color: AppColors.greyDark,
                         fontWeight: FontWeight.normal,
                         fontSize: getWidth(4, context),
                       ),
                     ),
-                    FilledButton(
-                        onPressed: () {
-                          // AppLocalizationCubit.get(context).changeAppLanguage(
-                          //     context,
-                          //     setLanguage: appLanguages.english);
-                        },
-                        child: Wrap(
-                          children: [
-                            const Icon(Icons.pin_drop_outlined),
-                            getCube(1, context),
-                            SizedBox(
-                              width: getWidth(20, context),
-                              child: Text(
-                                event.location,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
-                        )),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        // Divider(
-        //   endIndent: getWidth(17, context),
-        //   indent: getWidth(17, context),
-        //   thickness: 1,
-        //   color: AppColors.darkColor.withOpacity(.3),
-        // ),
       ),
     );
   }

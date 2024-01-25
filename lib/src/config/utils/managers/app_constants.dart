@@ -9,17 +9,32 @@ abstract class AppConstants {
     "Events",
     "Profile"
   ];
+
+  static const String savedUser = "currentuser";
+
   static String inTapCalenderTitle = "Calender:";
   static const String appFontFamily = "poppins";
   static const String savedAppLanguage = "savedAppLanguage";
 
+  ///Local Attendance Record
+  static String userLocalAttendance = "userAttendance";
+
   ///Firebase Data
   static String usersCollection = "users";
-  static String parentTabsCollection = "Taps";
-  static String announcementCollection = "announcement";
-  static String announcementDataCollection = "Tabs/announcement/posts";
-  static String eventsCollection = "events";
-  static String eventsDataCollection = "Tabs/events/posts";
+  static String staffMembersCollection = "/dashboard/staff/members/";
+  static String lastAttend = "lastAttend";
+
+  ///Attendance
+  static String attendanceRecordCollection = "attendanceRecord";
+  static String attendanceStaffCollection = "/Tabs/attendance/staff";
+
+  ///Eleave
+  static String eLeaveRecordCollection = "eleaveRecord";
+  static String eLeaveStaffCollection = "/Tabs/eleave/staff";
+
+  ///Other
+  static String announcementCollection = "/Tabs/announcement/posts";
+  static String eventsCollection = "/Tabs/events/posts";
   static String noPhotoUser = "NOPHOTO";
 
   static List<String> profileCardsName = [

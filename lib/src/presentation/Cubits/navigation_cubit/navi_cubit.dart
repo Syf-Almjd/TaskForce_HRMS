@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/Authentication/AuthPage.dart';
 import '../../Modules/Authentication/Login/BioDS.dart';
 import '../../Modules/Authentication/Login/LoginUser.dart';
-import '../../Modules/Home/home_page.dart';
 
 part 'navi_state.dart';
 
@@ -35,8 +34,7 @@ class NaviCubit extends Cubit<NaviState> {
   }
 
   void navigateToHome(context) {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+    Navigator.popUntil(context, (route) => route.isFirst);
     emit(HomeState());
   }
 
@@ -59,7 +57,7 @@ class NaviCubit extends Cubit<NaviState> {
     emit(BiometricLoginState());
   }
 
-  void pop(context, Widget widget) {
+  void pop(context) {
     final currentRoute = ModalRoute.of(context);
     // Check if there is a previous route in the navigation stack
     if (currentRoute != null && currentRoute.canPop) {

@@ -25,14 +25,19 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   getData() async {
-    List<EventModel> data = await RemoteDataCubit.get(context)
-        .getPostsData(PostsType.events)
-        .then((value) => value.cast<EventModel>().toList());
-
-    setState(() {
-      eventsList = data;
-      loaded = true;
-    });
+    try {
+      List<EventModel> data = await RemoteDataCubit.get(context)
+          .getEventPostsData()
+          .then((value) => value.cast<EventModel>().toList());
+      if (context.mounted) {
+        setState(() {
+          eventsList = data;
+          loaded = true;
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 
 import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
@@ -41,8 +40,8 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
-                      showToast("Your Email is incorrect!", SnackBarType.fail,
-                          context);
+                      showToast(
+                          "Your Email is incorrect!", Colors.red, context);
                       return "Your Email is incorrect";
                     }
                     return null;
@@ -60,7 +59,7 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || value.length <= 4) {
-                      showToast("Wrong Password", SnackBarType.fail, context);
+                      showToast("Wrong Password", Colors.red, context);
                       return "Wrong Password";
                     }
                     return null;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 
 import '../../../../domain/Models/UserModel.dart';
 import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
@@ -66,8 +65,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      showToast(
-                          "Your name is empty!", SnackBarType.fail, context);
+                      showToast("Your name is empty!", Colors.red, context);
                       return 'Your name is empty';
                     } else {
                       return null;
@@ -86,8 +84,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('0')) {
-                      showToast("Your number is invalid!", SnackBarType.fail,
-                          context);
+                      showToast("Your number is invalid!", Colors.red, context);
                       return 'Your number is invalid';
                     } else {
                       return null;
@@ -106,8 +103,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || value.length <= 8) {
-                      showToast(
-                          "Your address is short!", SnackBarType.fail, context);
+                      showToast("Your address is short!", Colors.red, context);
                       return 'Your address is short';
                     } else {
                       return null;

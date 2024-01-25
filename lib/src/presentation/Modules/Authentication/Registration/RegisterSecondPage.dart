@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 
 import '../../../../domain/Models/UserModel.dart';
 import '../../../Cubits/navigation_cubit/navi_cubit.dart';
@@ -64,8 +63,8 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
-                      showToast("Your email is incorrect!", SnackBarType.fail,
-                          context);
+                      showToast(
+                          "Your email is incorrect!", Colors.red, context);
                       return 'Your email is incorrect';
                     } else {
                       return null;
@@ -84,8 +83,8 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || value.length <= 8) {
-                      showToast("Use a stronger password!", SnackBarType.fail,
-                          context);
+                      showToast(
+                          "Use a stronger password!", Colors.red, context);
                       return 'Use a stronger password';
                     } else {
                       return null;
@@ -112,8 +111,8 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty || !(value == password.text)) {
-                      showToast("Your password doesn't match!",
-                          SnackBarType.fail, context);
+                      showToast(
+                          "Your password doesn't match!", Colors.red, context);
                       return "Your password doesn't match";
                     } else {
                       return null;

@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -350,14 +358,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
-  flutter_icon_snackbar:
-    dependency: "direct main"
-    description:
-      name: flutter_icon_snackbar
-      sha256: "859400d43c67c27d40ac00110460d5db895cdc70fc5050ec6fab3510088cfee4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -453,6 +453,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
+  geolocator:
+    dependency: "direct main"
+    description:
+      name: geolocator
+      sha256: e946395fc608842bb2f6c914807e9183f86f3cb787f6b8f832753e5251036f02
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.1.0"
+  geolocator_android:
+    dependency: transitive
+    description:
+      name: geolocator_android
+      sha256: "741579fa6c9e412984d2bdb2fbaa54e3c3f7587c60aeacfe6e058358a11f40f8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.0"
+  geolocator_apple:
+    dependency: transitive
+    description:
+      name: geolocator_apple
+      sha256: "1d938e2462cc5145c1402f89d49e70b60a2a51b89fb57414ced71417f1f479b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.3"
+  geolocator_platform_interface:
+    dependency: transitive
+    description:
+      name: geolocator_platform_interface
+      sha256: b8cc1d3be0ca039a3f2174b0b026feab8af3610e220b8532e42cff8ec6658535
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
+  geolocator_web:
+    dependency: transitive
+    description:
+      name: geolocator_web
+      sha256: "59083f7e0871b78299918d92bf930a14377f711d2d1156c558cd5ebae6c20d58"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  geolocator_windows:
+    dependency: transitive
+    description:
+      name: geolocator_windows
+      sha256: a92fae29779d5c6dc60e8411302f5221ade464968fe80a36d330e80a71f087af
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -485,14 +533,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  icon_animated:
+  iconsax_flutter:
     dependency: transitive
     description:
-      name: icon_animated
-      sha256: "0847039648c98e53ac9be16cac170c025461caeb4d890cf4f88c78578ef9e7aa"
+      name: iconsax_flutter
+      sha256: "95b65699da8ea98f87c5d232f06b0debaaf1ec1332b697e4d90969ec9a93037d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.0.0"
   image:
     dependency: transitive
     description:
@@ -749,6 +797,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  pausable_timer:
+    dependency: transitive
+    description:
+      name: pausable_timer
+      sha256: "35b1f77eb2fb0f42e823360321fbed9b9a8b1c7043a07a58aeda17d01f84659a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0+1"
   petitparser:
     dependency: transitive
     description:
@@ -853,14 +909,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
-  skeletonizer:
-    dependency: "direct main"
-    description:
-      name: skeletonizer
-      sha256: ff4c36e826efd5288d7a84e7619a6e9be8185d3064cecf101a9133762f3b401b
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.8.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -874,6 +922,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   stack_trace:
     dependency: transitive
     description:
@@ -922,6 +978,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  toastification:
+    dependency: "direct main"
+    description:
+      name: toastification
+      sha256: "14e7f9178db0393df00509cd921de3d3db310d06c7c122e873f31d3c8d18cf4e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   typed_data:
     dependency: transitive
     description:
@@ -994,6 +1058,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "22c94e5ad1e75f9934b766b53c742572ee2677c56bc871d850a57dad0f82127f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
   vector_math:
     dependency: transitive
     description:

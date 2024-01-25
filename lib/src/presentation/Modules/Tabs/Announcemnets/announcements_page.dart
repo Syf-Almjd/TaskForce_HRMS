@@ -31,7 +31,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   Future<void> getData() async {
     try {
       List<AnnouncementModel> data = await RemoteDataCubit.get(context)
-          .getPostsData(PostsType.announcements)
+          .getAnnouncementPostsData()
           .then((value) => value.cast<AnnouncementModel>().toList());
       if (mounted) {
         setState(() {
@@ -40,8 +40,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
         });
       }
     } catch (error) {
-      // Handle errors, e.g., log or display an error message
-      print("Error fetching data: $error");
+      debugPrint(error.toString());
     }
   }
 

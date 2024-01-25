@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
-import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
+import 'package:taskforce_hrms/src/domain/Models/eLeaveModel.dart';
 
-import '../../../../../config/utils/styles/app_colors.dart';
-import '../../../../Shared/Components.dart';
-import '../../../../Shared/WidgetBuilders.dart';
+import '../../../../../../config/utils/styles/app_colors.dart';
+import '../../../../../Shared/Components.dart';
+import '../../../../../Shared/WidgetBuilders.dart';
 
-class EventsList extends StatelessWidget {
-  final EventModel event;
-  const EventsList({super.key, required this.event});
+class EleaveHistoryCard extends StatelessWidget {
+  final EleaveModel eleaveRecord;
+  const EleaveHistoryCard({super.key, required this.eleaveRecord});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(20),
       child: Container(
         width: getWidth(100, context),
         decoration: BoxDecoration(
@@ -36,7 +35,7 @@ class EventsList extends StatelessWidget {
                     // backgroundColor: AppColors.primaryColor,
                     editable: false,
                     context: context,
-                    fileUser: event.image),
+                    fileUser: eleaveRecord.userPhoto),
               ),
             ),
             Padding(
@@ -47,7 +46,7 @@ class EventsList extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      event.title.toCapitalize(),
+                      getDateTimeToDay(eleaveRecord.dateTime),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: AppColors.darkColor,
@@ -59,7 +58,7 @@ class EventsList extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      event.description,
+                      eleaveRecord.requestInfo,
                       style: TextStyle(
                         color: AppColors.darkColor,
                         fontWeight: FontWeight.normal,
@@ -76,38 +75,13 @@ class EventsList extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.bottomRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      getDateTimeToDay(event.date),
-                      style: TextStyle(
-                        color: AppColors.greyDark,
-                        fontWeight: FontWeight.normal,
-                        fontSize: getWidth(4, context),
-                      ),
-                    ),
-                    FilledButton(
-                        onPressed: () {
-                          // AppLocalizationCubit.get(context).changeAppLanguage(
-                          //     context,
-                          //     setLanguage: appLanguages.english);
-                        },
-                        child: Wrap(
-                          children: [
-                            const Icon(Icons.pin_drop_outlined),
-                            getCube(1, context),
-                            SizedBox(
-                              width: getWidth(20, context),
-                              child: Text(
-                                event.location,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
-                        )),
-                  ],
+                child: Text(
+                  eleaveRecord.userCity,
+                  style: TextStyle(
+                    color: AppColors.greyDark,
+                    fontWeight: FontWeight.normal,
+                    fontSize: getWidth(4, context),
+                  ),
                 ),
               ),
             ),

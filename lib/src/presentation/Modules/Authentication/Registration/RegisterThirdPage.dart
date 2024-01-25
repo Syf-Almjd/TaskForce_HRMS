@@ -3,15 +3,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../domain/Models/UserModel.dart';
 import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
-import '../../../Shared/Singleton.dart';
 import '../../../Shared/WidgetBuilders.dart';
 
 class RegisterThirdPage extends StatefulWidget {
@@ -74,27 +73,27 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             height: getHeight(20, context),
             width: getWidth(45, context),
             decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(500),
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(20),
+              shape: BoxShape.rectangle,
               color: Colors.grey.withOpacity(0.2),
             ),
             child: Center(
-              child: InkWell(
-                onTap: () async {
-                  _pickFile();
-                },
-                child: Stack(
-                  children: [
-                    Center(
-                      child: (_imageBytes != null)
-                          ? previewImage(
-                              context: context,
-                              fileUser: _imageBytes,
-                              editable: true)
-                          : chooseFile(context),
-                    ),
-                  ],
-                ),
+              child: Stack(
+                children: [
+                  Center(
+                    child: (_imageBytes != null)
+                        ? previewImage(
+                            onTap: () {
+                              _imageBytes = null;
+                              _pickFile();
+                            },
+                            photoRadius: 20,
+                            context: context,
+                            fileUser: _imageBytes,
+                            editable: true)
+                        : chooseFile(context),
+                  ),
+                ],
               ),
             ),
           ),
@@ -107,7 +106,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
           textColor: Colors.blueGrey,
           buttonElevation: 0.0,
           onPressed: () {
-            signUser("NO_PHOTO");
+            signUser(AppConstants.noPhotoUser);
           },
           buttonText: 'Skip',
         ),
@@ -119,7 +118,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
                   if (_imageBytes != null) {
                     signUser(_imageBytes);
                   } else {
-                    showToast('Choose a photo', SnackBarType.fail, context);
+                    showToast('Choose a photo', Colors.red, context);
                   }
                 })),
         getCube(5, context),
@@ -137,11 +136,9 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         userID: "",
         lastLogin: timeNow.toString(),
         address: widget.previousUserData.address);
-    Singleton().userDataToBeUploaded = userData;
-    LocalDataCubit.get(context)
-        .saveSharedMap('currentuser', userData.toJson())
-        .then((value) => RemoteDataCubit.get(context)
-            .userRegister(Singleton().userDataToBeUploaded, context));
+    RemoteDataCubit.get(context).userRegister(userData, context);
+    await LocalDataCubit.get(context)
+        .saveSharedMap(AppConstants.savedUser, userData.toJson());
   }
 
   void _pickFile() async {

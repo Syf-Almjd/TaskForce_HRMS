@@ -3,6 +3,9 @@
   "location": "Locationdd",
   "features": "featuresss",
   "loading": "loadinggg",
-  "name": "loadinggg"
+  "name": "loadinggg",
+  "recordAttendance": "Record Attendance",
+  "attendanceWaring": "Warning ⛔ Once you record your attendance, it will get locked!",
+  "leaveRequestText": "More info about your request!"
 
 }

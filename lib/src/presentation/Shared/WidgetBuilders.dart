@@ -219,52 +219,59 @@ Widget previewImage(
     double photoRadius = 15.0,
     required fileUser,
     bool editable = false,
+    VoidCallback? onTap,
     required context}) {
   if (fileUser == AppConstants.noPhotoUser) {
-    fileUser = UserModel.loadingUser().photoID;
+    (fileUser = UserModel.loadingUser().photoID);
   }
+
   fileUser = base64Decode(fileUser);
-  return Stack(
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: backgroundColor,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(padding),
-          child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(photoRadius),
-              child: Image.memory(
-                fileUser,
-                fit: BoxFit.cover,
+
+  return InkWell(
+    splashColor: Colors.transparent,
+    onTap: onTap ?? () {},
+    child: Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: backgroundColor,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(padding),
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(photoRadius),
+                child: Image.memory(
+                  fileUser,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      Visibility(
-        visible: editable,
-        replacement: Container(),
-        child: Positioned(
-          bottom: 7,
-          right: 7,
-          child: Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.black12),
-            child: const Icon(
-              Icons.mode_edit_outline_outlined,
-              color: Colors.black,
-              size: 20,
+        Visibility(
+          visible: editable,
+          replacement: Container(),
+          child: Positioned(
+            bottom: 7,
+            right: 7,
+            child: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.black12),
+              child: const Icon(
+                Icons.mode_edit_outline_outlined,
+                color: Colors.black,
+                size: 20,
+              ),
             ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -276,10 +283,13 @@ Widget getSkeletonLoading({required PostsType type}) {
       if (stateLocalData is GettingLocalData ||
           stateRemoteData is GettingData) {
         return Wrap(
+            alignment: WrapAlignment.center,
             runSpacing: 50,
             children: List.generate(10, (index) {
               return type == PostsType.announcements
-                  ? Image.asset(AppAssets.appAnnouncementsLoading)
+                  ? Image.asset(
+                      AppAssets.appAnnouncementsLoading,
+                    )
                   : Image.asset(AppAssets.appEventsLoading);
             }));
       } else {
@@ -341,12 +351,12 @@ Widget getAppCalender({
           calendarStyle:
               const CalendarStyle(markerSize: 10, markersAutoAligned: true),
           eventLoader: (day) {
-            for (var dateElement in selectedDates) {
-              if (day == dateElement) {
-                return [dateElement];
-              }
-            }
-            return [];
+            return selectedDates
+                .where((dateElement) =>
+                    dateElement.day == day.day &&
+                    dateElement.month == day.month &&
+                    dateElement.year == day.year)
+                .toList();
           },
           onDaySelected: (date, date2) {
             if (selectedDates.contains(date)) {

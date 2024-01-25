@@ -3,5 +3,10 @@
   "location": "مكان",
   "features": "الخطوات",
   "loading": "تحميل",
-  "name": "تحميل"
+  "name": "تحميل",
+  "recordAttendance": "Record Attendance",
+  "attendanceWaring": "Warning ⛔ Once you record your attendance, it will get locked!",
+  "leaveRequestText": "More info about your request!"
+
+
 }

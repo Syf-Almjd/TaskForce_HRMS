@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../config/utils/managers/app_assets.dart';
+import '../../config/utils/styles/app_colors.dart';
+import '../../data/remote/RemoteHttpRequest.dart';
 
 TextStyle fontAlmarai(
     {double? size, Color? textColor, FontWeight? fontWeight}) {
@@ -160,11 +164,25 @@ Padding logoContainer(context) {
 }
 
 //Show a toast
-void showToast(String text, SnackBarType type, context) => IconSnackBar.show(
+void showToast(String text, Color color, context) => toastification.show(
       context: context,
-      snackBarType: type,
-      label: text,
+      title: text,
+      alignment: Alignment.bottomCenter,
+      primaryColor: color,
+      dragToClose: true,
+      showProgressBar: true,
+      icon: const Icon(Icons.info_outlined),
+      autoCloseDuration: const Duration(seconds: 3),
     );
+
+Widget getDivider(context) {
+  return Divider(
+    endIndent: getWidth(17, context),
+    indent: getWidth(17, context),
+    thickness: 1,
+    color: AppColors.darkColor.withOpacity(.3),
+  );
+}
 
 //Validate Text field
 validateForm(
@@ -179,16 +197,34 @@ validateForm(
 }
 
 String getDateTimeToDay(String dateString) {
-  DateTime date = DateTime.parse(dateString).toLocal();
-  String time = "${date.hour}:${date.minute}";
-  if (date.day == DateTime.now().day) {
-    return "Today, at $time";
+  try {
+    DateTime date = DateTime.parse(dateString).toLocal();
+    String time = "${date.hour}:${date.minute}";
+    if (date.day == DateTime.now().day) {
+      return "Today, at $time";
+    }
+    if (date.day == DateTime.now().day + 1) {
+      return "Tomorrow, at $time";
+    }
+    if (date.day == DateTime.now().day - 1) {
+      return "Yesterday, at $time";
+    }
+    return ("${date.toUtc().day},  ${date.toUtc().month.dateMonthName.substring(0, 3)}. at: $time");
+  } catch (e) {
+    return "Loading";
   }
-  if (date.day == DateTime.now().day + 1) {
-    return "Tomorrow, at $time";
-  }
-  if (date.day == DateTime.now().day - 1) {
-    return "Yesterday, at $time";
-  }
-  return ("${date.toUtc().day},  ${date.toUtc().month.dateMonthName.substring(0, 3)}. at: $time");
+}
+
+String getCurrentUserAttendance() {
+  return "${AppConstants.attendanceStaffCollection}/${FirebaseAuth.instance.currentUser?.uid}/${AppConstants.attendanceRecordCollection}";
+}
+
+Future<String> getLocationName(
+    {required String latitude, required String longitude}) async {
+  var location = await HttpRequestPage.getCityInfoAPI(latitude, longitude);
+  return location!["city"];
+}
+
+String getCurrentUserEleave(String userName) {
+  return "${AppConstants.eLeaveStaffCollection}/${FirebaseAuth.instance.currentUser?.uid}/${AppConstants.eLeaveRecordCollection}";
 }
