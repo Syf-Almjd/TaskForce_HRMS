@@ -67,34 +67,34 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
           ),
         ),
         const Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            height: getHeight(20, context),
-            width: getWidth(45, context),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              shape: BoxShape.rectangle,
-              color: Colors.grey.withOpacity(0.2),
-            ),
-            child: Center(
-              child: Stack(
-                children: [
-                  Center(
-                    child: (_imageBytes != null)
-                        ? previewImage(
-                            onTap: () {
-                              _imageBytes = null;
-                              _pickFile();
-                            },
-                            photoRadius: 20,
-                            context: context,
-                            fileUser: _imageBytes,
-                            editable: true)
-                        : chooseFile(context),
-                  ),
-                ],
+        InkWell(
+          splashColor: Colors.transparent,
+          onTap: () {
+            _imageBytes = null;
+            _pickFile();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              alignment: Alignment.center,
+              height: getHeight(20, context),
+              width: getWidth(45, context),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                shape: BoxShape.rectangle,
+                color: Colors.grey.withOpacity(0.2),
               ),
+              child: (_imageBytes != null)
+                  ? previewImage(
+                      onTap: () {
+                        _imageBytes = null;
+                        _pickFile();
+                      },
+                      photoRadius: 20,
+                      context: context,
+                      fileUser: _imageBytes,
+                      editable: true)
+                  : chooseFile(context),
             ),
           ),
         ),
@@ -131,14 +131,19 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         email: widget.previousUserData.email,
         password: widget.previousUserData.password,
         name: widget.previousUserData.name,
+        lastAttend: "Unknown",
         phoneNumber: widget.previousUserData.phoneNumber,
+        lastEleave: "Unknown",
         photoID: imageBytes,
         userID: "",
         lastLogin: timeNow.toString(),
         address: widget.previousUserData.address);
     RemoteDataCubit.get(context).userRegister(userData, context);
+    
+    var passwordLessUserData = userData.toJson();
+    passwordLessUserData['password'] = "PasswordLess";
     await LocalDataCubit.get(context)
-        .saveSharedMap(AppConstants.savedUser, userData.toJson());
+        .saveSharedMap(AppConstants.savedUser, passwordLessUserData);
   }
 
   void _pickFile() async {

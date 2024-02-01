@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -6,10 +7,12 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
 import 'package:toastification/toastification.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/utils/managers/app_assets.dart';
 import '../../config/utils/styles/app_colors.dart';
 import '../../data/remote/RemoteHttpRequest.dart';
+import '../Cubits/navigation_cubit/navi_cubit.dart';
 
 TextStyle fontAlmarai(
     {double? size, Color? textColor, FontWeight? fontWeight}) {
@@ -215,6 +218,49 @@ String getDateTimeToDay(String dateString) {
   }
 }
 
+Future showChoiceDialog(
+    {required BuildContext context,
+    String? title,
+    String? content,
+    required Function onYes,
+    Function? onNo}) {
+  return (showCupertinoDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title ?? ""),
+          content: Text(content ?? "Are you Sure?"),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                if (onNo != null) {
+                  onNo();
+                }
+                NaviCubit.get(context).pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                onYes();
+                NaviCubit.get(context).pop(context);
+              },
+            ),
+          ],
+        );
+      }));
+}
+
+void openUrl(String url) {
+  var openUrl = Uri.parse(url);
+  launchUrl(
+    openUrl,
+    mode: LaunchMode.externalApplication,
+  );
+}
+
 String getCurrentUserAttendance() {
   return "${AppConstants.attendanceStaffCollection}/${FirebaseAuth.instance.currentUser?.uid}/${AppConstants.attendanceRecordCollection}";
 }
@@ -225,6 +271,6 @@ Future<String> getLocationName(
   return location!["city"];
 }
 
-String getCurrentUserEleave(String userName) {
+String getCurrentUserEleave() {
   return "${AppConstants.eLeaveStaffCollection}/${FirebaseAuth.instance.currentUser?.uid}/${AppConstants.eLeaveRecordCollection}";
 }

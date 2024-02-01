@@ -2,14 +2,18 @@ class EventModel {
   String date;
   String title;
   String description;
-  String location;
+  String locationName;
+  String locationLongitude;
+  String locationLatitude;
   String image;
 
   EventModel({
     required this.date,
     required this.title,
     required this.description,
-    required this.location,
+    required this.locationName,
+    required this.locationLatitude,
+    required this.locationLongitude,
     required this.image,
   });
 
@@ -18,8 +22,10 @@ class EventModel {
       date: json['date'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      location: json['location'] as String,
+      locationName: json['locationName'] as String,
       image: json['image'] as String,
+      locationLatitude: json["locationLongitude"],
+      locationLongitude: json["locationLongitude"],
     );
   }
 
@@ -28,7 +34,9 @@ class EventModel {
       'date': date,
       'title': title,
       'description': description,
-      'location': location,
+      'locationName': locationName,
+      'locationLongitude': locationLongitude,
+      'locationLatitude': locationLatitude,
       'image': image,
     };
   }

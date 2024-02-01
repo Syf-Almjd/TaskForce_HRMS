@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
 import 'package:taskforce_hrms/src/data/local/localData_cubit/local_data_cubit.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
@@ -33,7 +32,7 @@ class _AttendScreenState extends State<AttendScreen> {
 
   @override
   void initState() {
-    // LocalDataCubit.get(context).getAttendanceStatus(context);
+    LocalDataCubit.get(context).getAttendanceStatus(context);
     super.initState();
   }
 
@@ -47,10 +46,15 @@ class _AttendScreenState extends State<AttendScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           (_imageBytes == null || _locationLatitude == null)
-              ? Icon(
-                  Icons.recent_actors_outlined,
-                  color: AppColors.primaryColor,
-                  size: getWidth(50, context),
+              ? IconButton(
+                  onPressed: () {
+                    sendRecord();
+                  },
+                  icon: Icon(
+                    Icons.recent_actors_outlined,
+                    color: AppColors.primaryColor,
+                    size: getWidth(50, context),
+                  ),
                 )
               : Column(
                   children: [
@@ -95,7 +99,6 @@ class _AttendScreenState extends State<AttendScreen> {
         _locationLongitude != null &&
         _imageBytes != null) {
       uploadAttendance();
-      NaviCubit.get(context).pop(context);
     }
   }
 
@@ -131,23 +134,18 @@ class _AttendScreenState extends State<AttendScreen> {
   }
 
   Future<void> uploadAttendance() async {
-    LocalDataCubit.get(context).saveSharedData(
-        AppConstants.userLocalAttendance, DateTime.now().toUtc().toString());
-
-    String city = await getLocationName(
-        latitude: _locationLatitude!, longitude: _locationLongitude!);
-
     AttendanceModel recordAttendance = AttendanceModel(
         userUID: FirebaseAuth.instance.currentUser!.uid,
         dateTime: DateTime.now().toString(),
         userLocationLatitude: _locationLatitude!,
         userLocationLongitude: _locationLongitude!,
         userPhoto: _imageBytes.toString(),
-        userCity: city);
+        userCity: "No City Detected");
 
     if (mounted) {
-      await RemoteDataCubit.get(context)
+      RemoteDataCubit.get(context)
           .recordTodayAttendance(recordAttendance, context);
+      NaviCubit.get(context).pop(context);
     }
   }
 }

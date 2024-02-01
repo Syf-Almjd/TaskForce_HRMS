@@ -4,6 +4,7 @@ import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
 
 import '../../../../../config/utils/styles/app_colors.dart';
 import '../../../../Shared/Components.dart';
+import '../../../../Shared/MapsLauncher.dart';
 import '../../../../Shared/WidgetBuilders.dart';
 
 class EventsList extends StatelessWidget {
@@ -89,11 +90,8 @@ class EventsList extends StatelessWidget {
                       ),
                     ),
                     FilledButton(
-                        onPressed: () {
-                          // AppLocalizationCubit.get(context).changeAppLanguage(
-                          //     context,
-                          //     setLanguage: appLanguages.english);
-                        },
+                        onPressed: () => MapsLauncher.launchCoordinates(
+                            event.locationLatitude, event.locationLongitude),
                         child: Wrap(
                           children: [
                             const Icon(Icons.pin_drop_outlined),
@@ -101,7 +99,7 @@ class EventsList extends StatelessWidget {
                             SizedBox(
                               width: getWidth(20, context),
                               child: Text(
-                                event.location,
+                                event.locationName,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )

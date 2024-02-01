@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/domain/Models/attendanceModel.dart';
 import 'package:taskforce_hrms/src/domain/Models/eLeaveModel.dart';
 import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
@@ -39,7 +40,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
 
     try {
       final userSnapshot = await FirebaseFirestore.instance
-          .collection(AppConstants.usersCollection)
+          .collection(AppConstants.staffMembersCollection)
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
@@ -51,6 +52,20 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
         emit(GetDataError());
         throw ("User Doesn't Exist");
       }
+    } on FirebaseAuthException {
+      emit(GetDataError());
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserData(UserModel userModel) async {
+    emit(GettingData());
+    try {
+      await FirebaseFirestore.instance
+          .collection(AppConstants.staffMembersCollection)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set(userModel.toJson());
+      emit(GetDataSuccessful());
     } on FirebaseAuthException {
       emit(GetDataError());
       rethrow;
@@ -88,6 +103,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .collection(AppConstants.staffMembersCollection)
           .doc(userModel.userID)
           .set(userModel.toJson());
+
       NaviCubit.get(context).navigateToHome(context);
       emit(GetDataSuccessful());
     } catch (error) {
@@ -146,10 +162,18 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
-  Future<bool> recordTodayAttendance(
+  Future<void> recordTodayAttendance(
       AttendanceModel attendanceModel, context) async {
     emit(GettingData());
+
     try {
+      LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalAttendance, DateTime.now().toUtc().toString());
+
+      attendanceModel.userCity = await getLocationName(
+          latitude: attendanceModel.userLocationLatitude,
+          longitude: attendanceModel.userLocationLongitude);
+
       await FirebaseFirestore.instance
           .collection(AppConstants.attendanceStaffCollection)
           .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -157,17 +181,27 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .doc(attendanceModel.dateTime)
           .set(attendanceModel.toJson());
 
-      await FirebaseFirestore.instance
-          .collection(AppConstants.attendanceStaffCollection)
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .set({AppConstants.lastAttend: attendanceModel.dateTime});
+      updateMemberField(AppConstants.lastAttendUSER);
 
       emit(GetDataSuccessful());
-      return true;
     } on FirebaseException catch (error) {
+      //reset time saved
+      LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalAttendance, "0000-00-00 11:11:11.111111");
+
       debugPrint(error.toString());
       emit(GetDataError());
-      return false;
+    }
+  }
+
+  changePassword(String newPassword) async {
+    emit(GettingData());
+    try {
+      await FirebaseAuth.instance.currentUser?.updatePassword(newPassword);
+      emit(GetDataSuccessful());
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(GetDataError());
     }
   }
 
@@ -198,34 +232,67 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
-  Future<bool> recordEleaveRequest(EleaveModel eleaveModel, context) async {
+  Future<void> recordEleaveRequest(EleaveModel eleaveModel, context) async {
     emit(GettingData());
+
     try {
-      String userName = await LocalDataCubit.get(context)
-          .getSharedMap(AppConstants.savedUser)
-          .then((value) => value['name']);
+      LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalEleave, DateTime.now().toUtc().toString());
+
+      eleaveModel.userCity = await getLocationName(
+          latitude: eleaveModel.userLocationLatitude,
+          longitude: eleaveModel.userLocationLongitude);
+
       await FirebaseFirestore.instance
           .collection(AppConstants.eLeaveStaffCollection)
-          .doc(userName)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(AppConstants.eLeaveRecordCollection)
           .doc(eleaveModel.dateTime)
           .set(eleaveModel.toJson());
+
+      updateMemberField(AppConstants.lastEleaveUSER);
+
       emit(GetDataSuccessful());
-      return true;
+    } on FirebaseException catch (error) {
+      LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalEleave, "0000-00-00 11:11:11.111111");
+
+      debugPrint(error.toString());
+      showToast("Please try again!", AppColors.darkColor, context);
+      emit(GetDataError());
+    }
+  }
+
+  Future<void> updateMemberField(String memberField) async {
+    emit(GettingData());
+    try {
+      await FirebaseFirestore.instance
+          .collection(AppConstants.staffMembersCollection)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({memberField: DateTime.now().toString()});
+
+      if (memberField == AppConstants.lastAttendUSER) {
+        await FirebaseFirestore.instance
+            .collection(AppConstants.attendanceStaffCollection)
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .set({memberField: DateTime.now().toString()});
+      }
+      if (memberField == AppConstants.lastEleaveUSER) {
+        await FirebaseFirestore.instance
+            .collection(AppConstants.eLeaveStaffCollection)
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .set({memberField: DateTime.now().toString()});
+      }
+      emit(GetDataSuccessful());
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
       emit(GetDataError());
-      return false;
     }
   }
 
   Future<List<Object>> getUserEleaveHistory(context) async {
     emit(GettingData());
-    String userName = await LocalDataCubit.get(context)
-        .getSharedMap(AppConstants.savedUser)
-        .then((value) => value['name']);
-
-    String collectionPath = getCurrentUserEleave(userName);
+    String collectionPath = getCurrentUserEleave();
     List<Object> data = [];
 
     try {

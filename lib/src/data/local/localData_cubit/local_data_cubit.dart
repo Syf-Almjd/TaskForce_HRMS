@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_enums.dart';
+import 'package:taskforce_hrms/src/domain/Models/UserModel.dart';
 
 import '../../../config/utils/managers/app_constants.dart';
 import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';
@@ -25,7 +26,7 @@ class LocalDataCubit extends Cubit<LocalDataState> {
     emit(UpdatingLocalData());
     try {
       var getData = await RemoteDataCubit.get(context).getUserData();
-      saveSharedMap('currentuser', getData.toJson());
+      saveSharedMap(AppConstants.savedUser, getData.toJson());
       emit(LocalDataSuccessful());
     } catch (e) {
       emit(LocalDataFailed());
@@ -134,6 +135,38 @@ class LocalDataCubit extends Cubit<LocalDataState> {
           DateTime.parse(userName).toLocal().toUtc().day) {
         showToast("Thank you! Attendance was recorded previously.", Colors.blue,
             context);
+        NaviCubit.get(context).pop(context);
+      }
+      emit(LocalDataSuccessful());
+    } catch (e) {
+      //No Saved Attendance
+      return;
+    }
+  }
+
+  Future<UserModel> getCurrentUser(context) async {
+    emit(GettingLocalData());
+    UserModel userModel = UserModel.loadingUser();
+    try {
+      UserModel userModel = UserModel.fromJson(await LocalDataCubit.get(context)
+          .getSharedMap(AppConstants.savedUser));
+      emit(LocalDataSuccessful());
+      return userModel;
+    } catch (e) {
+      emit(LocalDataFailed());
+      return userModel;
+    }
+  }
+
+  Future<void> getEleaveStatus(context) async {
+    emit(GettingLocalData());
+    try {
+      String userName = await LocalDataCubit.get(context)
+          .getSharedData(AppConstants.userLocalEleave);
+      if (DateTime.now().toUtc().day ==
+          DateTime.parse(userName).toLocal().toUtc().day) {
+        showToast(
+            "Thank you! Eleave was recorded previously.", Colors.blue, context);
         NaviCubit.get(context).pop(context);
       }
       emit(LocalDataSuccessful());

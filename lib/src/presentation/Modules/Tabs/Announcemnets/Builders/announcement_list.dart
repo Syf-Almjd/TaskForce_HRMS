@@ -24,7 +24,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
       child: Container(
         width: getWidth(100, context),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.primaryColor),
         ),
         child: Padding(
@@ -33,6 +33,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               previewImage(
+                  photoRadius: 5,
                   editable: false,
                   context: context,
                   fileUser: widget.announcementModel.image),

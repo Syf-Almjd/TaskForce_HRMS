@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<LocalDataCubit>(
-            create: (context) => LocalDataCubit(),
+            create: (context) => LocalDataCubit()..updateSharedUser(context),
           ),
           BlocProvider<AppLocalizationCubit>(
               create: (context) =>

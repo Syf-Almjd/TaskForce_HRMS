@@ -6,9 +6,7 @@ import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/WidgetBuilders.dart';
 
 import '../../../../config/utils/managers/app_constants.dart';
-import '../../../../config/utils/managers/app_enums.dart';
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
-import '../../../Cubits/app_localization/app_localization_cubit.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,13 +25,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   getData() async {
-    var currentUser = UserModel.fromJson(
+    userModel = UserModel.fromJson(
         await LocalDataCubit.get(context).getSharedMap(AppConstants.savedUser));
 
     if (mounted) {
-      setState(() {
-        userModel = currentUser;
-      });
+      setState(() {});
     }
   }
 
@@ -72,15 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         ...List.generate(
-            AppConstants.profileCardsName.length,
-            (index) => ProfileCard(
-                  title: AppConstants.profileCardsName[index],
-                  icon: AppConstants.profileCardsIcons[index],
-                  onTap: () {
-                    AppLocalizationCubit.get(context).changeAppLanguage(context,
-                        setLanguage: appLanguages.english);
-                  },
-                )),
+          AppConstants.profileCardsName.length,
+          (index) => ProfileCard(
+              title: AppConstants.profileCardsName[index],
+              icon: AppConstants.profileCardsIcons[index],
+              onTap: AppConstants.profileCardsPages[index](context, userModel)),
+        ),
       ],
     );
   }

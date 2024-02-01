@@ -5,8 +5,8 @@ enum AppAxis { horizontal, vertical }
 enum AttendanceTabButtons {
   attend,
   history,
-  reminders,
-  share,
+  // reminders,
+  // share,
 }
 
 enum EleaveTabButtons {

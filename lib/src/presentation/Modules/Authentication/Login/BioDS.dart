@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
+import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
 
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../Cubits/navigation_cubit/navi_cubit.dart';
@@ -22,6 +25,13 @@ class BiometricLogin extends StatelessWidget {
                 } else if (snapshot.hasError || snapshot.data == false) {
                   return Column(
                     children: [
+                      Container(
+                        alignment: Alignment.topRight,
+                        padding: const EdgeInsets.only(top: 30, right: 20),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.support_agent_rounded)),
+                      ),
                       logoContainer(context),
                       const Spacer(),
                       InkWell(
@@ -43,14 +53,12 @@ class BiometricLogin extends StatelessWidget {
                       ),
                       const Spacer(),
                       OutlinedButton(
-                          onPressed: () {},
-                          child: const Text("Contact Administrator")),
-                      OutlinedButton(
                           onPressed: () {
                             NaviCubit.get(context)
                                 .navigateToSliderLogout(context);
                           },
                           child: const Text("Logout")),
+                      getCube(5, context),
                       OutlinedButton(
                           onPressed: () {
                             if (Platform.isAndroid) {
@@ -64,11 +72,13 @@ class BiometricLogin extends StatelessWidget {
                     ],
                   );
                 } else {
-                  Future.delayed(Duration.zero, () {
-                    NaviCubit.get(context).navigateToHome(context);
-                  });
-                  return const Text("Success!");
+                  // Future.delayed(Duration.zero, () {
+                  LocalDataCubit.get(context).updateSharedUser(context);
+                  RemoteDataCubit.get(context)
+                      .updateMemberField(AppConstants.lastLoginUSER);
+                  return const HomePage();
                 }
+                // );
               })),
     );
   }

@@ -133,6 +133,8 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                           name: name.text,
                           phoneNumber: phoneNumber.text,
                           photoID: "",
+                          lastAttend: "",
+                          lastEleave: "",
                           userID: "",
                           lastLogin: "",
                           address: address.text);

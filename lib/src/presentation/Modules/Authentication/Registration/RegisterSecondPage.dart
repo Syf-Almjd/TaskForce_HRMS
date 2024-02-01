@@ -161,8 +161,10 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                           email: email.text,
                           password: password.text,
                           name: widget.previousUserData.name,
-                          phoneNumber: widget.previousUserData.name,
+                          phoneNumber: widget.previousUserData.phoneNumber,
                           photoID: "",
+                          lastAttend: "",
+                          lastEleave: "",
                           userID: "",
                           address: widget.previousUserData.address,
                           lastLogin: "");

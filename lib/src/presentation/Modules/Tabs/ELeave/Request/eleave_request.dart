@@ -10,6 +10,7 @@ import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/WidgetBuilders.dart';
 
+import '../../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../../data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 import '../../../../../domain/Models/eLeaveModel.dart';
 import '../../../../Cubits/navigation_cubit/navi_cubit.dart';
@@ -28,22 +29,46 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
   String? _locationLatitude;
   String? _locationLongitude;
   String? _imageBytes;
+  String userName = "Unknown";
+
+  @override
+  void initState() {
+    LocalDataCubit.get(context).getEleaveStatus(context);
+
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    userName = await LocalDataCubit.get(context)
+        .getCurrentUser(context)
+        .then((value) => value.name);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_locationLatitude == null || _locationLongitude == null) getLocation();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Eleave Request"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: ListView(
         children: [
+          getCube(5, context),
           (_imageBytes == null || _locationLatitude == null)
-              ? Icon(
-                  Icons.document_scanner_outlined,
-                  color: AppColors.primaryColor,
-                  size: getWidth(50, context),
+              ? IconButton(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  onPressed: () {
+                    startRequest();
+                  },
+                  icon: Icon(
+                    Icons.document_scanner_outlined,
+                    color: AppColors.primaryColor,
+                    size: getWidth(50, context),
+                  ),
                 )
               : Column(
                   children: [
@@ -56,7 +81,8 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
                             userPhoto: _imageBytes.toString(),
                             userCity:
                                 'Accurate Location: $_locationLongitude: $_locationLatitude',
-                            requestInfo: requestText.text)),
+                            requestInfo: requestText.text,
+                            userName: userName)),
                     OutlinedButton(
                         onPressed: () {
                           NaviCubit.get(context).navigateOff(context, widget);
@@ -64,6 +90,7 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
                         child: const Text("Try again"))
                   ],
                 ),
+          getCube(5, context),
           Padding(
             padding: const EdgeInsets.all(40.0),
             child: TextField(
@@ -79,9 +106,10 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
               textAlign: TextAlign.center,
             ),
           ),
+          getCube(5, context),
           loadButton(
             textSize: getWidth(4, context),
-            buttonText: context.getAppAssets.recordAttendance,
+            buttonText: context.getAppAssets.recordEleave,
             onPressed: () {
               startRequest();
             },
@@ -102,7 +130,6 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
         setState(() {
           _imageBytes = base64Encode(bytesUint8List);
         });
-        startRequest();
       }
     } catch (e) {
       if (mounted) showToast("Error: $e", Colors.red, context);
@@ -117,7 +144,6 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
           _locationLongitude = position.longitude.toString();
           _locationLatitude = position.latitude.toString();
         });
-        startRequest();
       }
     } catch (e) {
       if (mounted) showToast("Error: $e", Colors.red, context);
@@ -125,19 +151,19 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
   }
 
   Future<void> uploadEleave() async {
-    String city = await getLocationName(
-        latitude: _locationLatitude!, longitude: _locationLongitude!);
     var requestEleave = EleaveModel(
         userUID: FirebaseAuth.instance.currentUser!.uid,
         dateTime: DateTime.now().toString(),
-        userCity: city,
+        userCity: "No City Detected",
         userPhoto: _imageBytes.toString(),
         requestInfo: requestText.text,
         userLocationLatitude: _locationLatitude!,
-        userLocationLongitude: _locationLongitude!);
+        userLocationLongitude: _locationLongitude!,
+        userName: userName);
+
     if (mounted) {
-      await RemoteDataCubit.get(context)
-          .recordEleaveRequest(requestEleave, context);
+      RemoteDataCubit.get(context).recordEleaveRequest(requestEleave, context);
+      NaviCubit.get(context).pop(context);
     }
   }
 
@@ -148,13 +174,11 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
       showToast(
           "Please write request information", AppColors.scaffoldColor, context);
     }
-
     if (_locationLatitude != null &&
         _locationLongitude != null &&
         _imageBytes != null &&
         requestText.text.isNotEmpty) {
       uploadEleave();
-      NaviCubit.get(context).pop(context);
     }
   }
 }

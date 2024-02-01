@@ -4,6 +4,7 @@ class EleaveModel {
   String userLocationLatitude;
   String userLocationLongitude;
   String userPhoto;
+  String userName;
   String requestInfo;
   String userCity;
 
@@ -13,6 +14,7 @@ class EleaveModel {
       required this.userLocationLongitude,
       required this.userPhoto,
       required this.requestInfo,
+      required this.userName,
       required this.userCity,
       required this.userUID});
 
@@ -24,6 +26,7 @@ class EleaveModel {
       userLocationLongitude: json['userLocationLongitude'],
       userLocationLatitude: json['userLocationLatitude'],
       userPhoto: json['userPhoto'],
+      userName: json['userName'],
       userCity: json['userCity'],
     );
   }
@@ -36,6 +39,7 @@ class EleaveModel {
       'userLocationLongitude': userLocationLongitude,
       'userLocationLatitude': userLocationLatitude,
       'userPhoto': userPhoto,
+      'userName': userName,
       'userCity': userCity,
     };
   }

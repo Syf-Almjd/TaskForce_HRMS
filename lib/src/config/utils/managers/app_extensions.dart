@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
-import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Attendance/Share/share_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/History/eleave_history_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/Request/eleave_request.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/eleave_page.dart';
@@ -10,7 +9,6 @@ import 'package:taskforce_hrms/src/presentation/Modules/Tabs/announcemnets/annou
 
 import '../../../presentation/Modules/Tabs/Attendance/Attend/attend_screen.dart';
 import '../../../presentation/Modules/Tabs/Attendance/History/attend_history_screen.dart';
-import '../../../presentation/Modules/Tabs/Attendance/Reminders/reminders_screen.dart';
 import '../../../presentation/Modules/Tabs/Events/events_page.dart';
 import '../../../presentation/test.dart';
 import 'app_enums.dart';
@@ -46,10 +44,10 @@ extension FeatureButtonsWidget on Enum {
         return const AttendScreen();
       case AttendanceTabButtons.history:
         return const AttendanceHistoryScreen();
-      case AttendanceTabButtons.reminders:
-        return const ReminderScreen();
-      case AttendanceTabButtons.share:
-        return const ShareAttendanceScreen();
+      // case AttendanceTabButtons.reminders:
+      //   return const ReminderScreen();
+      // case AttendanceTabButtons.share:
+      //   return const ShareAttendanceScreen();
 
       //eleave
       case EleaveTabButtons.request:
