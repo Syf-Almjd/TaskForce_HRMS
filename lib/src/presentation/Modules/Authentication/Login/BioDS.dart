@@ -58,7 +58,7 @@ class BiometricLogin extends StatelessWidget {
                                 .navigateToSliderLogout(context);
                           },
                           child: const Text("Logout")),
-                      getCube(5, context),
+                      const Spacer(),
                       OutlinedButton(
                           onPressed: () {
                             if (Platform.isAndroid) {
@@ -68,7 +68,7 @@ class BiometricLogin extends StatelessWidget {
                             }
                           },
                           child: const Text("Exit")),
-                      getCube(10, context),
+                      getCube(2, context),
                     ],
                   );
                 } else {

@@ -5,6 +5,8 @@ import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Attendance/Reminder
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Profile/Screens/edit_profile_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 
+import '../../../domain/Models/UserModel.dart';
+
 abstract class AppConstants {
   static const String appTitle = "TASKFORCE HR";
   static List<String> homeTabs = [
@@ -60,29 +62,29 @@ abstract class AppConstants {
     Icons.door_back_door_outlined,
   ];
   static List<Function> profileCardsPages = [
-    (context, currentUser) {
-      NaviCubit.get(context).navigate(
+    (BuildContext context, UserModel currentUser) {
+      return NaviCubit.get(context).navigate(
           context,
           EditProfileScreen(
             currentUser: currentUser,
           ));
     },
-    (context) {
-      NaviCubit.get(context).navigate(context, const ReminderScreen());
+    (BuildContext context, UserModel currentUser) {
+      return NaviCubit.get(context).navigate(context, const ReminderScreen());
     },
-    (context) {
-      showToast(
+    (BuildContext context, UserModel currentUser) {
+      return showToast(
         "Contact +601154225092",
         AppColors.primaryColor,
         context,
       );
     },
-    (context) {
-      openUrl(
+    (BuildContext context, UserModel currentUser) {
+      return openUrl(
           "https://play.google.com/store/apps/details?id=com.example.taskforce_hrms.taskforce_hrms");
     },
-    (context) {
-      showChoiceDialog(
+    (BuildContext context, UserModel currentUser) {
+      return showChoiceDialog(
           context: context,
           title: "Logout",
           onYes: () {
