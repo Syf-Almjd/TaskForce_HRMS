@@ -26,17 +26,19 @@ class LocalDataCubit extends Cubit<LocalDataState> {
     emit(UpdatingLocalData());
     try {
       var getData = await RemoteDataCubit.get(context).getUserData();
-      saveSharedMap(AppConstants.savedUser, getData.toJson());
+      saveSharedMap(AppConstants.savedUser, getData);
       emit(LocalDataSuccessful());
     } catch (e) {
       emit(LocalDataFailed());
     }
   }
 
-  Future<void> saveSharedMap(String mapName, Map mapData) async {
+  Future<void> saveSharedMap(String mapName, UserModel mapData) async {
+    var passwordLessUserData = mapData.toJson();
+    passwordLessUserData['password'] = "PasswordLess";
     emit(UpdatingLocalData());
     try {
-      String jsonString = jsonEncode(mapData);
+      String jsonString = jsonEncode(passwordLessUserData);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(mapName, jsonString);
       emit(LocalDataSuccessful());

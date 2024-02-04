@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cubit.dart';
-import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Attendance/Reminders/reminders_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Profile/Screens/edit_profile_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 
-import '../../../domain/Models/UserModel.dart';
+import '../../../presentation/Modules/Tabs/Profile/Screens/reminders_screen.dart';
 
 abstract class AppConstants {
   static const String appTitle = "TASKFORCE HR";
@@ -28,24 +27,31 @@ abstract class AppConstants {
   static String userLocalEleave = "userEleave";
 
   ///Firebase Data
-  static String usersCollection = "users";
-  static String staffMembersCollection = "/dashboard/staff/members/";
+  static String usersCollection = "Users";
+  static String staffMembersCollection = "/Users/PPKstaff/members/";
   static String lastAttendUSER = "lastAttend";
   static String lastEleaveUSER = "lastEleave";
   static String lastLoginUSER = "lastLogin";
 
   ///Attendance
   static String attendanceRecordCollection = "attendanceRecord";
-  static String attendanceStaffCollection = "/Tabs/attendance/staff";
+  static String attendanceStaffCollection = "/Tabs/attendance/PPKstaff";
 
   ///Eleave
   static String eLeaveRecordCollection = "eleaveRecord";
-  static String eLeaveStaffCollection = "/Tabs/eleave/staff";
+  static String eLeaveStaffCollection = "/Tabs/eleave/PPKstaff";
 
   ///Other
-  static String announcementCollection = "/Tabs/announcement/posts";
-  static String eventsCollection = "/Tabs/events/posts";
+  static String announcementCollection = "/Tabs/announcement/PPKstaff";
+  static String eventsCollection = "/Tabs/events/PPKstaff";
   static String noPhotoUser = "NOPHOTO";
+
+  static List<String> remindersButtonsNames = [
+    "Attendance",
+    "Eleave Approval",
+    "Announcements",
+    "Events",
+  ];
 
   static List<String> profileCardsName = [
     "Edit Profile",
@@ -54,6 +60,7 @@ abstract class AppConstants {
     "Share",
     "Logout"
   ];
+
   static List<IconData> profileCardsIcons = [
     Icons.edit_attributes_outlined,
     Icons.notifications_active_outlined,
@@ -62,29 +69,25 @@ abstract class AppConstants {
     Icons.door_back_door_outlined,
   ];
   static List<Function> profileCardsPages = [
-    (BuildContext context, UserModel currentUser) {
-      return NaviCubit.get(context).navigate(
-          context,
-          EditProfileScreen(
-            currentUser: currentUser,
-          ));
+    (context) {
+      NaviCubit.get(context).navigate(context, const EditProfileScreen());
     },
-    (BuildContext context, UserModel currentUser) {
-      return NaviCubit.get(context).navigate(context, const ReminderScreen());
+    (context) {
+      NaviCubit.get(context).navigate(context, const ReminderScreen());
     },
-    (BuildContext context, UserModel currentUser) {
-      return showToast(
+    (context) {
+      showToast(
         "Contact +601154225092",
         AppColors.primaryColor,
         context,
       );
     },
-    (BuildContext context, UserModel currentUser) {
-      return openUrl(
+    (context) {
+      openUrl(
           "https://play.google.com/store/apps/details?id=com.example.taskforce_hrms.taskforce_hrms");
     },
-    (BuildContext context, UserModel currentUser) {
-      return showChoiceDialog(
+    (context) {
+      showChoiceDialog(
           context: context,
           title: "Logout",
           onYes: () {

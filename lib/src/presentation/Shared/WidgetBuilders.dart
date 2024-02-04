@@ -359,16 +359,9 @@ Widget getAppCalender({
                 : List.empty();
           },
           onDaySelected: (date, date2) {
-            if (selectedDates.contains(date)) {
-              showToast("You Activities Today was Recorded!",
-                  AppColors.primaryColor, context);
-              // ToDO make page to display u were absent if ther eis mistakes contact bla bla
-              // NaviCubit.get(context).navigate(context, const TestPage());
-            } else {
-              showToast("There is no activities in this day!",
-                  AppColors.primaryColor, context);
-              // NaviCubit.get(context).navigate(context, const TestPage());
-            }
+            showToast("There is no special activities in this day!",
+                AppColors.primaryColor, context);
+            // NaviCubit.get(context).navigate(context, const TestPage());
           },
           focusedDay: DateTime.now(),
           firstDay: firstDay,

@@ -139,11 +139,9 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         lastLogin: timeNow.toString(),
         address: widget.previousUserData.address);
     RemoteDataCubit.get(context).userRegister(userData, context);
-    
-    var passwordLessUserData = userData.toJson();
-    passwordLessUserData['password'] = "PasswordLess";
+
     await LocalDataCubit.get(context)
-        .saveSharedMap(AppConstants.savedUser, passwordLessUserData);
+        .saveSharedMap(AppConstants.savedUser, userData);
   }
 
   void _pickFile() async {

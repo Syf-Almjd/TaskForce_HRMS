@@ -2,6 +2,7 @@ import 'package:dart_secure/dart_secure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taskforce_hrms/src/data/local/localData_cubit/local_data_cubit.dart';
 
 import '../../../domain/entities/Authentication/AuthPage.dart';
 import '../../Modules/Authentication/Login/BioDS.dart';
@@ -46,6 +47,7 @@ class NaviCubit extends Cubit<NaviState> {
 
   void navigateToSliderLogout(context) {
     FirebaseAuth.instance.signOut();
+    LocalDataCubit.get(context).clearSharedAll();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const AuthPage()));
     emit(IntoPageState());

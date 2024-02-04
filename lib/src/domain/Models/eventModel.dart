@@ -6,6 +6,7 @@ class EventModel {
   String locationLongitude;
   String locationLatitude;
   String image;
+  String datePublished;
 
   EventModel({
     required this.date,
@@ -15,6 +16,7 @@ class EventModel {
     required this.locationLatitude,
     required this.locationLongitude,
     required this.image,
+    required this.datePublished,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
@@ -24,8 +26,9 @@ class EventModel {
       description: json['description'] as String,
       locationName: json['locationName'] as String,
       image: json['image'] as String,
-      locationLatitude: json["locationLongitude"],
+      locationLatitude: json["locationLatitude"],
       locationLongitude: json["locationLongitude"],
+      datePublished: json["datePublished"],
     );
   }
 
@@ -38,6 +41,7 @@ class EventModel {
       'locationLongitude': locationLongitude,
       'locationLatitude': locationLatitude,
       'image': image,
+      'datePublished': datePublished,
     };
   }
 }

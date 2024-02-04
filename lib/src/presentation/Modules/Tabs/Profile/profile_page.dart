@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
               title: AppConstants.profileCardsName[index],
               icon: AppConstants.profileCardsIcons[index],
               onTap: () {
-                AppConstants.profileCardsPages[index](context, userModel);
+                AppConstants.profileCardsPages[index](context);
               }),
         ),
       ],

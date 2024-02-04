@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
-import 'package:taskforce_hrms/src/data/local/localData_cubit/local_data_cubit.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 import 'package:taskforce_hrms/src/domain/Models/attendanceModel.dart';
 import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cubit.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 
 import '../../../../../config/utils/styles/app_colors.dart';
+import '../../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../Shared/WidgetBuilders.dart';
 import '../../../../Shared/geoLocator.dart';
 import '../History/Builders/attend_history_card.dart';
@@ -143,9 +143,9 @@ class _AttendScreenState extends State<AttendScreen> {
         userCity: "No City Detected");
 
     if (mounted) {
-      RemoteDataCubit.get(context)
-          .recordTodayAttendance(recordAttendance, context);
-      NaviCubit.get(context).pop(context);
+      await RemoteDataCubit.get(context)
+          .recordTodayAttendance(recordAttendance, context)
+          .whenComplete(() => NaviCubit.get(context).pop(context));
     }
   }
 }

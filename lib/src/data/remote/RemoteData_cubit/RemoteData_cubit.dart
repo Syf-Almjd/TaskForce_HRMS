@@ -58,6 +58,31 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
+  Future<bool> checkUserAccount(context) async {
+    emit(GettingData());
+    try {
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection(AppConstants.staffMembersCollection)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (userSnapshot.exists) {
+        emit(GetDataSuccessful());
+        return true;
+      } else {
+        showToast(
+            "You account data is inaccessible", AppColors.redColor, context);
+        NaviCubit.get(context).navigateToSliderLogout(context);
+        emit(GetDataError());
+        return false;
+      }
+    } on FirebaseAuthException catch (error) {
+      showToast("error $error", AppColors.redColor, context);
+
+      emit(GetDataError());
+      return false;
+    }
+  }
+
   Future<void> updateUserData(UserModel userModel) async {
     emit(GettingData());
     try {
@@ -167,9 +192,6 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     emit(GettingData());
 
     try {
-      LocalDataCubit.get(context).saveSharedData(
-          AppConstants.userLocalAttendance, DateTime.now().toUtc().toString());
-
       attendanceModel.userCity = await getLocationName(
           latitude: attendanceModel.userLocationLatitude,
           longitude: attendanceModel.userLocationLongitude);
@@ -180,10 +202,11 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .collection(AppConstants.attendanceRecordCollection)
           .doc(attendanceModel.dateTime)
           .set(attendanceModel.toJson());
-
       updateMemberField(AppConstants.lastAttendUSER);
-
+      await LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalAttendance, DateTime.now().toString());
       emit(GetDataSuccessful());
+      return;
     } on FirebaseException catch (error) {
       //reset time saved
       LocalDataCubit.get(context).saveSharedData(
@@ -236,9 +259,6 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     emit(GettingData());
 
     try {
-      LocalDataCubit.get(context).saveSharedData(
-          AppConstants.userLocalEleave, DateTime.now().toUtc().toString());
-
       eleaveModel.userCity = await getLocationName(
           latitude: eleaveModel.userLocationLatitude,
           longitude: eleaveModel.userLocationLongitude);
@@ -251,8 +271,10 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .set(eleaveModel.toJson());
 
       updateMemberField(AppConstants.lastEleaveUSER);
-
+      await LocalDataCubit.get(context).saveSharedData(
+          AppConstants.userLocalEleave, DateTime.now().toString());
       emit(GetDataSuccessful());
+      return;
     } on FirebaseException catch (error) {
       LocalDataCubit.get(context).saveSharedData(
           AppConstants.userLocalEleave, "0000-00-00 11:11:11.111111");
@@ -260,6 +282,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
       debugPrint(error.toString());
       showToast("Please try again!", AppColors.darkColor, context);
       emit(GetDataError());
+      return;
     }
   }
 

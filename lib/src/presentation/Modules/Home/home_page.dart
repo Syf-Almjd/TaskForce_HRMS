@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_extensions.dart';
 import 'package:taskforce_hrms/src/data/local/localData_cubit/local_data_cubit.dart';
+import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 
 import '../../../config/utils/managers/app_enums.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
+    RemoteDataCubit.get(context).checkUserAccount(context);
     String newPicture = await LocalDataCubit.get(context)
         .getSharedMap(AppConstants.savedUser)
         .then((value) => value["photoID"]);

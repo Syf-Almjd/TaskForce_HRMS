@@ -59,13 +59,11 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
           getCube(5, context),
           (_imageBytes == null || _locationLatitude == null)
               ? IconButton(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
                   onPressed: () {
                     startRequest();
                   },
                   icon: Icon(
-                    Icons.document_scanner_outlined,
+                    Icons.filter_tilt_shift_rounded,
                     color: AppColors.primaryColor,
                     size: getWidth(50, context),
                   ),
@@ -162,8 +160,9 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
         userName: userName);
 
     if (mounted) {
-      RemoteDataCubit.get(context).recordEleaveRequest(requestEleave, context);
-      NaviCubit.get(context).pop(context);
+      await RemoteDataCubit.get(context)
+          .recordEleaveRequest(requestEleave, context)
+          .whenComplete(() => NaviCubit.get(context).pop(context));
     }
   }
 

@@ -31,6 +31,8 @@ dependencies:
   table_calendar: ^3.0.9
   geolocator: ^10.1.0
   toastification: ^1.1.0
+  firebase_in_app_messaging: ^0.7.4+12
+
 
   flutter_localizations:
     sdk: flutter

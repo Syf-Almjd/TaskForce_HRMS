@@ -28,7 +28,9 @@ class _AttendancePageState extends State<AttendancePage> {
     for (var element in data) {
       dates.add(DateTime.parse(element.dateTime));
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

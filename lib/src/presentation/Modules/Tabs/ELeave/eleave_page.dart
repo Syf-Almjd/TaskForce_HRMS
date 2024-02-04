@@ -28,7 +28,9 @@ class _EleavePageState extends State<EleavePage> {
     for (var element in data) {
       dates.add(DateTime.parse(element.dateTime));
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
