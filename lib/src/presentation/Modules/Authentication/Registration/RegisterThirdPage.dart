@@ -66,7 +66,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        const Spacer(),
+        getCube(2, context),
         InkWell(
           splashColor: Colors.transparent,
           onTap: () {
@@ -98,7 +98,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             ),
           ),
         ),
-        const Spacer(),
+        getCube(2, context),
         loadButton(
           buttonHeight: getHeight(5, context),
           buttonWidth: getWidth(50, context),
@@ -110,7 +110,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
           },
           buttonText: 'Skip',
         ),
-        const Spacer(),
+        getCube(5, context),
         Center(
             child: loadButton(
                 buttonText: "Start!",
@@ -121,7 +121,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
                     showToast('Choose a photo', Colors.red, context);
                   }
                 })),
-        getCube(5, context),
+        const Spacer(),
       ],
     );
   }
