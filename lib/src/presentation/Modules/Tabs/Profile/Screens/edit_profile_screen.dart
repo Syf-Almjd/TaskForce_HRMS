@@ -113,6 +113,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    enabled: false,
                     controller: email,
                     decoration: InputDecoration(
                       labelText: currentUser.email,

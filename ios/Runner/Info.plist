@@ -12,6 +12,8 @@
 	<string>Taskforce Hrms</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>take user's photo</string>
 	<key>NSCameraUsageDescription</key>
     <string>take user's photo</string>
     <key>NSMicrophoneUsageDescription</key>

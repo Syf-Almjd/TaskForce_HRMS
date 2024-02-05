@@ -66,7 +66,6 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        getCube(2, context),
         InkWell(
           splashColor: Colors.transparent,
           onTap: () {
@@ -74,7 +73,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             _pickFile();
           },
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Container(
               alignment: Alignment.center,
               height: getHeight(20, context),
@@ -98,7 +97,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
             ),
           ),
         ),
-        getCube(2, context),
+        getCube(1, context),
         loadButton(
           buttonHeight: getHeight(5, context),
           buttonWidth: getWidth(50, context),
@@ -110,7 +109,7 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
           },
           buttonText: 'Skip',
         ),
-        getCube(5, context),
+        getCube(2, context),
         Center(
             child: loadButton(
                 buttonText: "Start!",
@@ -121,7 +120,6 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
                     showToast('Choose a photo', Colors.red, context);
                   }
                 })),
-        const Spacer(),
       ],
     );
   }

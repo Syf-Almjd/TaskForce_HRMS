@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
+import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cubit.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Authentication/Permission/check_register_permission.dart';
 
-import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
 import '../../../Shared/WidgetBuilders.dart';
 
@@ -94,8 +94,8 @@ class _LoginState extends State<Login> {
                       textAlign: TextAlign.right,
                     ),
                     onTap: () {
-                      BlocProvider.of<RegisterNavigationBloc>(context)
-                          .add(TabChange(1));
+                      NaviCubit.get(context)
+                          .navigate(context, const CheckRegisterPermission());
                     },
                   ),
                 ),

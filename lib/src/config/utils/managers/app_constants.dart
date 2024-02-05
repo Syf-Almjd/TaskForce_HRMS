@@ -32,6 +32,8 @@ abstract class AppConstants {
   static String lastAttendUSER = "lastAttend";
   static String lastEleaveUSER = "lastEleave";
   static String lastLoginUSER = "lastLogin";
+  static String PPKstaff = "PPKstaff";
+  static String staffKey = "staffKey";
 
   ///Attendance
   static String attendanceRecordCollection = "attendanceRecord";

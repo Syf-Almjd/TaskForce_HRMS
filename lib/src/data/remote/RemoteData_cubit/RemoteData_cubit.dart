@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dart_secure/dart_secure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,10 +8,12 @@ import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/domain/Models/attendanceModel.dart';
 import 'package:taskforce_hrms/src/domain/Models/eLeaveModel.dart';
 import 'package:taskforce_hrms/src/domain/Models/eventModel.dart';
+import 'package:taskforce_hrms/src/domain/entities/Authentication/AuthPage.dart';
 
 import '../../../domain/Models/UserModel.dart';
 import '../../../domain/Models/announcementModel.dart';
 import '../../../presentation/Cubits/navigation_cubit/navi_cubit.dart';
+import '../../../presentation/Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../presentation/Shared/Components.dart';
 import '../../local/localData_cubit/local_data_cubit.dart';
 
@@ -58,6 +61,31 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
+  Future<void> getRegistrationKey(keyInput, context) async {
+    emit(GettingData());
+    try {
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection(AppConstants.usersCollection)
+          .doc(AppConstants.PPKstaff)
+          .get();
+
+      if (userSnapshot.exists) {
+        if (keyInput == userSnapshot.data()![AppConstants.staffKey]) {
+          BlocProvider.of<RegisterNavigationBloc>(context).add(TabChange(1));
+          emit(GetDataSuccessful());
+        }
+      } else {
+        showToast(
+            "Wrong Key, Please contact PPK Admin", AppColors.redColor, context);
+        tempLockUser(context, afterCountNavigateTo: const AuthPage());
+        emit(GetDataError());
+      }
+    } on FirebaseAuthException catch (error) {
+      showToast("error $error", AppColors.redColor, context);
+      emit(GetDataError());
+    }
+  }
+
   Future<bool> checkUserAccount(context) async {
     emit(GettingData());
     try {
@@ -86,6 +114,10 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
   Future<void> updateUserData(UserModel userModel) async {
     emit(GettingData());
     try {
+      await FirebaseAuth.instance.currentUser
+          ?.verifyBeforeUpdateEmail(userModel.email);
+      await FirebaseAuth.instance.currentUser
+          ?.updatePassword(userModel.password);
       await FirebaseFirestore.instance
           .collection(AppConstants.staffMembersCollection)
           .doc(FirebaseAuth.instance.currentUser!.uid)

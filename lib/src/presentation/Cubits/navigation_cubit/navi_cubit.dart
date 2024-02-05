@@ -45,9 +45,9 @@ class NaviCubit extends Cubit<NaviState> {
     emit(AdminState());
   }
 
-  void navigateToSliderLogout(context) {
-    FirebaseAuth.instance.signOut();
-    LocalDataCubit.get(context).clearSharedAll();
+  Future<void> navigateToSliderLogout(context) async {
+    await FirebaseAuth.instance.signOut();
+    await LocalDataCubit.get(context).clearSharedAll();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const AuthPage()));
     emit(IntoPageState());
