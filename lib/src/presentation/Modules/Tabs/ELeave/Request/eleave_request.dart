@@ -94,8 +94,6 @@ class _EleaveRequestScreenState extends State<EleaveRequestScreen> {
             child: TextField(
               controller: requestText,
               enableSuggestions: true,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
               minLines: 1,
               decoration: InputDecoration(
                   border: OutlineInputBorder(

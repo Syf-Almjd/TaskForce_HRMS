@@ -71,14 +71,18 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
 
       if (userSnapshot.exists) {
         if (keyInput == userSnapshot.data()![AppConstants.staffKey]) {
+          NaviCubit.get(context).pop(context);
           BlocProvider.of<RegisterNavigationBloc>(context).add(TabChange(1));
           emit(GetDataSuccessful());
+        } else {
+          showToast("Wrong Key, Please contact PPK Admin", AppColors.redColor,
+              context);
+          tempLockUser(context, afterCountNavigateTo: const AuthPage());
+          emit(GetDataError());
         }
       } else {
         showToast(
-            "Wrong Key, Please contact PPK Admin", AppColors.redColor, context);
-        tempLockUser(context, afterCountNavigateTo: const AuthPage());
-        emit(GetDataError());
+            "Error, Please check your internet", AppColors.redColor, context);
       }
     } on FirebaseAuthException catch (error) {
       showToast("error $error", AppColors.redColor, context);
@@ -111,17 +115,14 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
-  Future<void> updateUserData(UserModel userModel) async {
+  Future<void> updateUserData(UserModel userModel, context) async {
     emit(GettingData());
     try {
-      await FirebaseAuth.instance.currentUser
-          ?.verifyBeforeUpdateEmail(userModel.email);
-      await FirebaseAuth.instance.currentUser
-          ?.updatePassword(userModel.password);
       await FirebaseFirestore.instance
           .collection(AppConstants.staffMembersCollection)
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .set(userModel.toJson());
+      NaviCubit.get(context).navigateToBiometricLogin(context);
       emit(GetDataSuccessful());
     } on FirebaseAuthException {
       emit(GetDataError());
@@ -249,9 +250,14 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
-  changePassword(String newPassword) async {
+  changePassword(String prevPass, String newPassword) async {
     emit(GettingData());
     try {
+      await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(
+          EmailAuthProvider.credential(
+              email: FirebaseAuth.instance.currentUser!.email.toString(),
+              password: prevPass));
+
       await FirebaseAuth.instance.currentUser?.updatePassword(newPassword);
       emit(GetDataSuccessful());
     } catch (e) {

@@ -5,12 +5,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:taskforce_hrms/src/config/themes/theme_manager.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
+import 'package:taskforce_hrms/src/domain/entities/Authentication/AuthPage.dart';
 import 'package:taskforce_hrms/src/presentation/Cubits/app_localization/app_localization_cubit.dart';
 import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cubit.dart';
 import 'package:taskforce_hrms/src/presentation/Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 
 import 'data/local/localData_cubit/local_data_cubit.dart';
-import 'domain/entities/Authentication/AuthenticationLayout.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
                 title: AppConstants.appTitle,
                 theme: getApplicationTheme(),
                 // darkTheme: getDarkApplicationTheme(),
-                home: const SignLayout());
+                home: const AuthPage());
           },
         ));
   }

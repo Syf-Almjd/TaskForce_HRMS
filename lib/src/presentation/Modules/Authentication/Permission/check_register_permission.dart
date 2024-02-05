@@ -18,45 +18,52 @@ class _CheckRegisterPermissionState extends State<CheckRegisterPermission> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const Text("Please Input Staff Registration Code!"),
-          TextFormField(
-            key: formKey,
-            validator: (value) {
-              if (value!.isEmpty || value.length <= 4) {
-                showToast("Wrong Code", Colors.red, context);
-                return "Wrong Code";
-              }
-              return null;
-            },
-            controller: code,
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              labelText: 'Password',
-              prefixIcon: const Icon(Icons.password_outlined),
-            ),
-          ),
-          Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.all(20),
-            child: loadButton(
-                textSize: 10,
-                buttonElevation: 0,
-                textColor: Colors.white,
-                buttonHeight: getHeight(7, context),
-                buttonWidth: getWidth(15, context),
-                onPressed: () {
-                  if (validateForm(formKey)) {
-                    RemoteDataCubit.get(context)
-                        .getRegistrationKey(code.text, context);
+    return Form(
+      key: formKey,
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text("Please Input Staff Registration Code!"),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty || value.length <= 6) {
+                    showToast("Wrong Code", Colors.red, context);
+                    return "Wrong Code";
                   }
+                  return null;
                 },
-                buttonText: "Validate"),
-          )
-        ],
+                controller: code,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  labelText: 'Registration Code',
+                  prefixIcon: const Icon(Icons.qr_code),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: const EdgeInsets.all(20),
+              child: loadButton(
+                  textSize: 20,
+                  buttonElevation: 0,
+                  textColor: Colors.white,
+                  buttonHeight: getHeight(7, context),
+                  buttonWidth: getWidth(50, context),
+                  onPressed: () {
+                    if (validateForm(formKey)) {
+                      RemoteDataCubit.get(context)
+                          .getRegistrationKey(code.text, context);
+                    }
+                  },
+                  buttonText: "Validate"),
+            )
+          ],
+        ),
       ),
     );
   }

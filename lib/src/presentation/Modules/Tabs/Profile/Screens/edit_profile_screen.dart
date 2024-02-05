@@ -10,7 +10,6 @@ import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit
 import '../../../../../config/utils/managers/app_constants.dart';
 import '../../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../../domain/Models/UserModel.dart';
-import '../../../../Cubits/navigation_cubit/navi_cubit.dart';
 import '../../../../Shared/Components.dart';
 import '../../../../Shared/WidgetBuilders.dart';
 
@@ -42,7 +41,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   getData() async {
     currentUser = await RemoteDataCubit.get(context).getUserData();
     _imageBytes = currentUser.photoID;
-
     setState(() {});
   }
 
@@ -241,8 +239,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       if (changePassBtn == true &&
           (newPass.text.isEmpty || newPass.text.length <= 8)) {
+        RemoteDataCubit.get(context)
+            .changePassword(currentUser.password, newPass.text);
         currentUser.password = newPass.text;
-        RemoteDataCubit.get(context).changePassword(newPass.text);
       }
 
       var userData = UserModel(
@@ -259,9 +258,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       LocalDataCubit.get(context)
           .saveSharedMap(AppConstants.savedUser, userData);
-      RemoteDataCubit.get(context)
-          .updateUserData(userData)
-          .then((_) => NaviCubit.get(context).pop(context));
+      RemoteDataCubit.get(context).updateUserData(userData, context);
     }
   }
 
