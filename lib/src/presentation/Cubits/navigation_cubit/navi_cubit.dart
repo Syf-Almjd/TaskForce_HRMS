@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskforce_hrms/src/data/local/localData_cubit/local_data_cubit.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
 
 import '../../../domain/entities/Authentication/AuthPage.dart';
 import '../../Modules/Authentication/Login/BioDS.dart';
@@ -35,7 +36,11 @@ class NaviCubit extends Cubit<NaviState> {
   }
 
   void navigateToHome(context) {
-    Navigator.popUntil(context, (route) => route.isFirst);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+      (route) => false, // Remove all routes from the stack
+    );
     emit(HomeState());
   }
 
