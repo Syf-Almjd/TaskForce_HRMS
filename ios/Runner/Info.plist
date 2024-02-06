@@ -14,6 +14,8 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>take user's photo</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Verify the phone's owner</string>
 	<key>NSCameraUsageDescription</key>
     <string>take user's photo</string>
     <key>NSMicrophoneUsageDescription</key>
