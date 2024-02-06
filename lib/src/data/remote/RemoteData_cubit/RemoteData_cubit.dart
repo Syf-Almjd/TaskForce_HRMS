@@ -165,6 +165,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
       NaviCubit.get(context).navigateToHome(context);
       emit(GetDataSuccessful());
     } catch (error) {
+      FirebaseAuth.instance.currentUser!.delete();
       showToast("Error in RegisterMethod $error", Colors.red, context);
       emit(GetDataError());
     }
