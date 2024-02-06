@@ -36,10 +36,11 @@ class NaviCubit extends Cubit<NaviState> {
   }
 
   void navigateToHome(context) {
+    /// Remove all routes from the stack
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const HomePage()),
-      (route) => false, // Remove all routes from the stack
+      (route) => false,
     );
     emit(HomeState());
   }
