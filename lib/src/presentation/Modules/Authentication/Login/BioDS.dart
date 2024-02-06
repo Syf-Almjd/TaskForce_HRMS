@@ -18,7 +18,7 @@ class BiometricLogin extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: FutureBuilder<bool>(
-              future: LocalDataCubit.get(context).getBioAuthentication(),
+              future: LocalDataCubit.get(context).getBioAuthentication(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return loadingAnimation();

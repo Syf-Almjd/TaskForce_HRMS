@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_enums.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/domain/Models/UserModel.dart';
 
 import '../../../config/utils/managers/app_constants.dart';
@@ -109,13 +110,13 @@ class LocalDataCubit extends Cubit<LocalDataState> {
   }
 
   //Get the biometric auth from current user
-  Future<bool> getBioAuthentication() async {
+  Future<bool> getBioAuthentication(context) async {
     emit(GettingLocalData());
 
     var authStatus = await biometricAuth(
         stickyAuth: true,
         biometricOnly: false,
-        sensitiveTransaction: true,
+        sensitiveTransaction: false,
         userErrorDialogs: true,
         message: "Please verify your identity to continue!");
 
@@ -123,6 +124,8 @@ class LocalDataCubit extends Cubit<LocalDataState> {
       emit(LocalDataSuccessful());
       return true;
     } else {
+      showToast("Error Occurred, please contact developer",
+          AppColors.primaryColor, context);
       emit(LocalDataFailed());
       return false;
     }
