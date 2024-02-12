@@ -169,7 +169,7 @@ Padding logoContainer(context) {
 //Show a toast
 void showToast(String text, Color color, context) => toastification.show(
       context: context,
-      title: text,
+      title: Text(text),
       alignment: Alignment.bottomCenter,
       primaryColor: color,
       dragToClose: true,
