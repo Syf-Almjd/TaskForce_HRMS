@@ -83,22 +83,44 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    child: Text(
-                      "Don't have an account?",
-                      softWrap: true,
-                      style: TextStyle(color: Colors.grey.withOpacity(0.6)),
-                      textAlign: TextAlign.right,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        child: Text(
+                          "Forgot Password",
+                          softWrap: true,
+                          style: TextStyle(color: Colors.grey.withOpacity(0.6)),
+                          textAlign: TextAlign.right,
+                        ),
+                        onTap: () {
+                          NaviCubit.get(context).navigate(
+                              context, const CheckRegisterPermission());
+                        },
+                      ),
                     ),
-                    onTap: () {
-                      NaviCubit.get(context)
-                          .navigate(context, const CheckRegisterPermission());
-                    },
-                  ),
-                ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        child: Text(
+                          "New Employee?",
+                          softWrap: true,
+                          style: TextStyle(color: Colors.grey.withOpacity(0.6)),
+                          textAlign: TextAlign.right,
+                        ),
+                        onTap: () {
+                          NaviCubit.get(context).navigate(
+                              context, const CheckRegisterPermission());
+                        },
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

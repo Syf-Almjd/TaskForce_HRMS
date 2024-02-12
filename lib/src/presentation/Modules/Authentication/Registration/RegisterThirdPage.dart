@@ -9,6 +9,7 @@ import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit
 
 import '../../../../data/local/localData_cubit/local_data_cubit.dart';
 import '../../../../domain/Models/UserModel.dart';
+import '../../../Cubits/navigation_cubit/navi_cubit.dart';
 import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
 import '../../../Shared/WidgetBuilders.dart';
@@ -136,10 +137,15 @@ class _RegisterThirdPageState extends State<RegisterThirdPage> {
         userID: "",
         lastLogin: timeNow.toString(),
         address: widget.previousUserData.address);
-    RemoteDataCubit.get(context).userRegister(userData, context);
-
-    await LocalDataCubit.get(context)
-        .saveSharedMap(AppConstants.savedUser, userData);
+    RemoteDataCubit.get(context).userRegister(userData, context).then((value) {
+      if (value) {
+        LocalDataCubit.get(context)
+            .saveSharedMap(AppConstants.savedUser, userData);
+        NaviCubit.get(context).navigateToHome(context);
+      } else {
+        BlocProvider.of<RegisterNavigationBloc>(context).add(TabChange(2));
+      }
+    });
   }
 
   void _pickFile() async {

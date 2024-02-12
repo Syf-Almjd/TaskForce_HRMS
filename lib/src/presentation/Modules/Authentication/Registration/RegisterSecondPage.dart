@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/Models/UserModel.dart';
-import '../../../Cubits/navigation_cubit/navi_cubit.dart';
 import '../../../Cubits/tabsNavi_Bloc/tabsNavigation_bloc.dart';
 import '../../../Shared/Components.dart';
 import '../../../Shared/WidgetBuilders.dart';
-import '../Login/LoginUser.dart';
 
 class RegisterSecondPage extends StatefulWidget {
   final UserModel previousUserData;
@@ -22,6 +20,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
   late UserModel userData;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController otpCode = TextEditingController();
   TextEditingController passwordConfirmation = TextEditingController();
   final _validateKey = GlobalKey<FormState>();
 
@@ -75,7 +74,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20)),
                     labelText: "Email",
-                    prefixIcon: Icon(Icons.email_outlined),
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -145,8 +144,8 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                         textAlign: TextAlign.right,
                       ),
                       onTap: () {
-                        NaviCubit.get(context)
-                            .navigateOff(context, const Login());
+                        BlocProvider.of<RegisterNavigationBloc>(context)
+                            .add(TabChange(0));
                       }),
                 ),
               ],
@@ -155,7 +154,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
           Center(
               child: loadButton(
                   buttonText: "Finalize..",
-                  onPressed: () {
+                  onPressed: () async {
                     if (validateForm(_validateKey)) {
                       userData = UserModel(
                           email: email.text,
@@ -168,6 +167,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                           userID: "",
                           address: widget.previousUserData.address,
                           lastLogin: "");
+
                       BlocProvider.of<UserRegisterBloc>(context)
                           .add(UpdateUserEvent(userData));
                       BlocProvider.of<RegisterNavigationBloc>(context)

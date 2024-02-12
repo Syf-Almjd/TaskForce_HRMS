@@ -1,24 +1,24 @@
-class AttendanceModel {
+class CheckoutModel {
   String dateTime;
   String userUID;
   String userLocationLatitude;
   String userLocationLongitude;
   String userPhoto;
   String userCity;
-  String checkOutTime;
+  String checkInTime;
 
-  AttendanceModel(
+  CheckoutModel(
       {required this.dateTime,
       required this.userLocationLatitude,
       required this.userLocationLongitude,
       required this.userPhoto,
       required this.userCity,
-      required this.checkOutTime,
+      required this.checkInTime,
       required this.userUID});
 
-  factory AttendanceModel.fromJson(Map<String, dynamic> json) {
-    return AttendanceModel(
-      checkOutTime: json['checkOutTime'],
+  factory CheckoutModel.fromJson(Map<String, dynamic> json) {
+    return CheckoutModel(
+      checkInTime: json['checkInTime'],
       dateTime: json['dateTime'],
       userUID: json['userUID'],
       userLocationLongitude: json['userLocationLongitude'],
@@ -30,7 +30,7 @@ class AttendanceModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'checkOutTime': checkOutTime,
+      'checkInTime': checkInTime,
       'dateTime': dateTime,
       'userUID': userUID,
       'userLocationLongitude': userLocationLongitude,

@@ -32,12 +32,13 @@ class _AttendScreenState extends State<AttendScreen> {
 
   @override
   void initState() {
-    LocalDataCubit.get(context).getAttendanceStatus(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    LocalDataCubit.get(context).getAttendanceStatus(context);
+
     if (_locationLatitude == null || _locationLongitude == null) getLocation();
     return Scaffold(
       appBar: AppBar(),
@@ -66,7 +67,8 @@ class _AttendScreenState extends State<AttendScreen> {
                             userLocationLongitude: _locationLongitude!,
                             userPhoto: _imageBytes.toString(),
                             userCity:
-                                'Accurate Location: $_locationLongitude: $_locationLatitude')),
+                                '📍 $_locationLongitude: $_locationLatitude',
+                            checkOutTime: 'Not yet')),
                     OutlinedButton(
                         onPressed: () {
                           NaviCubit.get(context).navigateOff(context, widget);
@@ -140,7 +142,8 @@ class _AttendScreenState extends State<AttendScreen> {
         userLocationLatitude: _locationLatitude!,
         userLocationLongitude: _locationLongitude!,
         userPhoto: _imageBytes.toString(),
-        userCity: "No City Detected");
+        userCity: "No City Detected",
+        checkOutTime: "Not Taken Yet");
 
     if (mounted) {
       await RemoteDataCubit.get(context)

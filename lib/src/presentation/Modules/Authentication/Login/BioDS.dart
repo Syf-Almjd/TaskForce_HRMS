@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskforce_hrms/src/config/utils/managers/app_constants.dart';
+import 'package:taskforce_hrms/src/config/utils/styles/app_colors.dart';
 import 'package:taskforce_hrms/src/data/remote/RemoteData_cubit/RemoteData_cubit.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
 
@@ -29,7 +30,10 @@ class BiometricLogin extends StatelessWidget {
                         alignment: Alignment.topRight,
                         padding: const EdgeInsets.only(top: 30, right: 20),
                         child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showToast("Please contact: +601154225092",
+                                  AppColors.primaryColor, context);
+                            },
                             icon: const Icon(Icons.support_agent_rounded)),
                       ),
                       logoContainer(context),
@@ -74,8 +78,8 @@ class BiometricLogin extends StatelessWidget {
                 } else {
                   // Future.delayed(Duration.zero, () {
                   LocalDataCubit.get(context).updateSharedUser(context);
-                  RemoteDataCubit.get(context)
-                      .updateMemberField(AppConstants.lastLoginUSER);
+                  RemoteDataCubit.get(context).updateMemberField(
+                      AppConstants.lastLoginUSER, DateTime.now().toString());
                   return const HomePage();
                 }
                 // );

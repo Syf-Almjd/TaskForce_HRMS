@@ -24,6 +24,7 @@ abstract class AppConstants {
 
   ///Local Attendance Record
   static String userLocalAttendance = "userAttendance";
+  static String userLocalCheckout = "userCheckOut";
   static String userLocalEleave = "userEleave";
 
   ///Firebase Data
@@ -34,6 +35,7 @@ abstract class AppConstants {
   static String lastLoginUSER = "lastLogin";
   static String PPKstaff = "PPKstaff";
   static String staffKey = "staffKey";
+  static String checkOutTime = "checkOutTime";
 
   ///Attendance
   static String attendanceRecordCollection = "attendanceRecord";

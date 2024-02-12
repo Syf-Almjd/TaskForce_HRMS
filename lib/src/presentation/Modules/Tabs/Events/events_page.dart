@@ -28,7 +28,7 @@ class _EventsPageState extends State<EventsPage> {
     try {
       List<EventModel> data = await RemoteDataCubit.get(context)
           .getEventPostsData()
-          .then((value) => value.cast<EventModel>().toList());
+          .then((value) => value.cast<EventModel>().toList().reversed.toList());
       if (context.mounted) {
         setState(() {
           eventsList = data;

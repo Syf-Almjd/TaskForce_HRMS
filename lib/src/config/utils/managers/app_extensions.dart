@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Home/home_page.dart';
+import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Attendance/CheckOut/check_out_attendance.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/History/eleave_history_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/Request/eleave_request.dart';
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/ELeave/eleave_page.dart';
@@ -40,12 +41,13 @@ extension FeatureButtonsWidget on Enum {
   Widget getFeatureButtonWidget() {
     switch (this) {
       //Attendance
-      case AttendanceTabButtons.attend:
+      case AttendanceTabButtons.checkin:
         return const AttendScreen();
+      case AttendanceTabButtons.checkout:
+        return const CheckoutAttendanceScreen();
       case AttendanceTabButtons.history:
         return const AttendanceHistoryScreen();
-      // case AttendanceTabButtons.reminders:
-      //   return const ReminderScreen();
+
       // case AttendanceTabButtons.share:
       //   return const ShareAttendanceScreen();
 

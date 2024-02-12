@@ -3,9 +3,10 @@ enum AppTabsHeaders { attendance, eleave, announcements, events, profile }
 enum AppAxis { horizontal, vertical }
 
 enum AttendanceTabButtons {
-  attend,
+  checkin,
+  checkout,
   history,
-  // reminders,
+
   // share,
 }
 

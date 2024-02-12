@@ -46,7 +46,7 @@ class AttendanceHistoryCard extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      attendanceRecord.dateTime,
+                      getDateTimeToDay(attendanceRecord.dateTime),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: AppColors.darkColor,
@@ -58,7 +58,20 @@ class AttendanceHistoryCard extends StatelessWidget {
                   SizedBox(
                     width: getWidth(50, context),
                     child: Text(
-                      attendanceRecord.userCity,
+                      "Check In: ${attendanceRecord.dateTime}",
+                      style: TextStyle(
+                        color: AppColors.darkColor,
+                        fontWeight: FontWeight.normal,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: getWidth(3, context),
+                      ),
+                      maxLines: 3,
+                    ),
+                  ),
+                  SizedBox(
+                    width: getWidth(50, context),
+                    child: Text(
+                      "Check Out: ${attendanceRecord.checkOutTime}",
                       style: TextStyle(
                         color: AppColors.darkColor,
                         fontWeight: FontWeight.normal,
@@ -80,7 +93,7 @@ class AttendanceHistoryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      getDateTimeToDay(attendanceRecord.dateTime),
+                      attendanceRecord.userCity,
                       style: TextStyle(
                         color: AppColors.greyDark,
                         fontWeight: FontWeight.normal,

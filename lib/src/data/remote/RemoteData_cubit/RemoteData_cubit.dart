@@ -61,6 +61,29 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
+  Future<void> sendVerifyRequest() async {
+    emit(GettingData());
+    try {
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+      emit(GetDataSuccessful());
+    } on FirebaseAuthException {
+      emit(GetDataError());
+      rethrow;
+    }
+  }
+
+  Future<bool> checkEmailVerified() async {
+    emit(GettingData());
+    try {
+      bool? isVerified = await FirebaseAuth.instance.currentUser?.emailVerified;
+      emit(GetDataSuccessful());
+      return isVerified ?? false;
+    } on FirebaseAuthException {
+      emit(GetDataError());
+      rethrow;
+    }
+  }
+
   Future<void> getRegistrationKey(keyInput, context) async {
     emit(GettingData());
     try {
@@ -73,6 +96,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
         if (keyInput == userSnapshot.data()![AppConstants.staffKey]) {
           NaviCubit.get(context).pop(context);
           BlocProvider.of<RegisterNavigationBloc>(context).add(TabChange(1));
+
           emit(GetDataSuccessful());
         } else {
           showToast("Wrong Key, Please contact PPK Admin", AppColors.redColor,
@@ -149,25 +173,26 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
   }
 
   //Firebase Register with current user data
-  Future<void> userRegister(UserModel userModel, context) async {
+  Future<bool> userRegister(UserModel userModel, context) async {
     emit(GettingData());
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: userModel.email, password: userModel.password)
-          .then((value) =>
-              userModel.userID = FirebaseAuth.instance.currentUser!.uid);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: userModel.email, password: userModel.password);
+      userModel.userID = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance
           .collection(AppConstants.staffMembersCollection)
           .doc(userModel.userID)
           .set(userModel.toJson());
-
-      NaviCubit.get(context).navigateToHome(context);
+      sendVerifyRequest();
       emit(GetDataSuccessful());
-    } catch (error) {
-      FirebaseAuth.instance.currentUser!.delete();
-      showToast("Error in RegisterMethod $error", Colors.red, context);
+      return true;
+    } on FirebaseException catch (e) {
       emit(GetDataError());
+      showToast(e.message.toString(), Colors.red, context);
+      if (FirebaseAuth.instance.currentUser != null) {
+        FirebaseAuth.instance.currentUser!.delete();
+      }
+      return false;
     }
   }
 
@@ -236,9 +261,10 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .collection(AppConstants.attendanceRecordCollection)
           .doc(attendanceModel.dateTime)
           .set(attendanceModel.toJson());
-      updateMemberField(AppConstants.lastAttendUSER);
+      updateMemberField(AppConstants.lastAttendUSER, attendanceModel.dateTime);
       await LocalDataCubit.get(context).saveSharedData(
           AppConstants.userLocalAttendance, DateTime.now().toString());
+
       emit(GetDataSuccessful());
       return;
     } on FirebaseException catch (error) {
@@ -309,7 +335,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
           .doc(eleaveModel.dateTime)
           .set(eleaveModel.toJson());
 
-      updateMemberField(AppConstants.lastEleaveUSER);
+      updateMemberField(AppConstants.lastEleaveUSER, eleaveModel.dateTime);
       await LocalDataCubit.get(context).saveSharedData(
           AppConstants.userLocalEleave, DateTime.now().toString());
       emit(GetDataSuccessful());
@@ -325,26 +351,49 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     }
   }
 
-  Future<void> updateMemberField(String memberField) async {
+  Future<void> updateMemberField(String memberField, date) async {
     emit(GettingData());
     try {
       await FirebaseFirestore.instance
           .collection(AppConstants.staffMembersCollection)
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({memberField: DateTime.now().toString()});
+          .update({memberField: date});
 
       if (memberField == AppConstants.lastAttendUSER) {
         await FirebaseFirestore.instance
             .collection(AppConstants.attendanceStaffCollection)
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .set({memberField: DateTime.now().toString()});
+            .set({memberField: date});
       }
       if (memberField == AppConstants.lastEleaveUSER) {
         await FirebaseFirestore.instance
             .collection(AppConstants.eLeaveStaffCollection)
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .set({memberField: DateTime.now().toString()});
+            .set({memberField: date});
       }
+      emit(GetDataSuccessful());
+    } on FirebaseException catch (error) {
+      debugPrint(error.toString());
+      emit(GetDataError());
+    }
+  }
+
+  Future<void> updateCheckOut(context) async {
+    emit(GettingData());
+    try {
+      var userLocalAttendance = await FirebaseFirestore.instance
+          .collection(AppConstants.attendanceStaffCollection)
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((value) => value[AppConstants.lastAttendUSER]);
+
+      await FirebaseFirestore.instance
+          .collection(AppConstants.attendanceStaffCollection)
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection(AppConstants.attendanceRecordCollection)
+          .doc(userLocalAttendance)
+          .update({AppConstants.checkOutTime: DateTime.now().toString()});
+
       emit(GetDataSuccessful());
     } on FirebaseException catch (error) {
       debugPrint(error.toString());

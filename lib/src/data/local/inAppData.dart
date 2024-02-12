@@ -10,7 +10,7 @@ List<String> homeMenuIcons = [
 
 List<PageViewModel> listPagesViewModel(context) => [
       PageViewModel(
-        title: 'Welcome',
+        title: 'Welcome!',
         body: 'Confidentiality',
         image: Center(
           child: Padding(
@@ -20,7 +20,7 @@ List<PageViewModel> listPagesViewModel(context) => [
         ),
       ),
       PageViewModel(
-        title: '',
+        title: 'School of Computing and Informatics',
         body: 'Integrity',
         image: Center(
           child: Image.network(
