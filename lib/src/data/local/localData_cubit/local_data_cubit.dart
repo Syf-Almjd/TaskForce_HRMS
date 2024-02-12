@@ -133,17 +133,17 @@ class LocalDataCubit extends Cubit<LocalDataState> {
 
   void getAttendanceStatus(context) {
     emit(GettingLocalData());
-    var date = DateTime.now();
-    if (date.hour < 7 || date.hour >= 8) {
-      if (date.hour < 7) {
-        showToast("You are too Early, check back at 7 O'clock",
-            AppColors.primaryColor, context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      var date = DateTime.now();
+
+      if ((date.hour >= 7 && date.hour <= 8) ||
+          (date.hour >= 19 && date.hour <= 20)) {
       } else {
-        showToast("Sorry you are late! Attendance will not be recorded.",
-            Colors.blue, context);
+        showToast("Sorry you are not allowed to record attendance now!",
+            AppColors.primaryColor, context);
+        NaviCubit.get(context).pop(context);
       }
-      NaviCubit.get(context).pop(context);
-    }
+    });
   }
 
   Future<void> getCheckOutStatus(context) async {
