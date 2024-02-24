@@ -36,6 +36,17 @@ class BiometricLogin extends StatelessWidget {
                             },
                             icon: const Icon(Icons.support_agent_rounded)),
                       ),
+                      getCube(1, context),
+                      Container(
+                        alignment: Alignment.topRight,
+                        padding: const EdgeInsets.only(top: 30, right: 20),
+                        child: IconButton(
+                            onPressed: () {
+                              LocalDataCubit.get(context).saveSharedData(
+                                  AppConstants.userSkipLocalBio, "true");
+                            },
+                            icon: const Icon(Icons.disabled_visible_rounded)),
+                      ),
                       logoContainer(context),
                       const Spacer(),
                       InkWell(

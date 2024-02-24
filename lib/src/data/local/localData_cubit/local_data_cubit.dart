@@ -112,7 +112,14 @@ class LocalDataCubit extends Cubit<LocalDataState> {
   //Get the biometric auth from current user
   Future<bool> getBioAuthentication(context) async {
     emit(GettingLocalData());
-
+    try {
+      String bioStatus = await getSharedData(AppConstants.userSkipLocalBio);
+      if (bool.parse(bioStatus)) {
+        return true;
+      }
+    } catch (e) {
+      //Data was not true (not an issue)
+    }
     var authStatus = await biometricAuth(
         stickyAuth: true,
         biometricOnly: false,
@@ -139,7 +146,7 @@ class LocalDataCubit extends Cubit<LocalDataState> {
       if ((date.hour >= 7 && date.hour <= 8) ||
           (date.hour >= 19 && date.hour <= 20)) {
       } else {
-        showToast("Sorry you are not allowed to record attendance now!",
+        showToast("Sorry... you are not allowed to record attendance now!",
             AppColors.primaryColor, context);
         NaviCubit.get(context).pop(context);
       }
@@ -147,47 +154,16 @@ class LocalDataCubit extends Cubit<LocalDataState> {
   }
 
   Future<void> getCheckOutStatus(context) async {
-    emit(GettingLocalData());
-    var date = DateTime.now();
-    try {
-      // String userLocalAttendance = await LocalDataCubit.get(context)
-      //     .getSharedData(AppConstants.userLocalCheckout);
-      if (date.hour <= DateTime.parse("2023-01-01 19:00:10.100000").hour) {
-        showToast("You are too Early, check back at 7 O'clock Evening",
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      var date = DateTime.now();
+      if ((date.hour >= 7 && date.hour <= 8) ||
+          (date.hour >= 19 && date.hour <= 20)) {
+      } else {
+        showToast("Sorry... you are not allowed to checkout now!",
             AppColors.primaryColor, context);
         NaviCubit.get(context).pop(context);
       }
-      if (date.hour >=
-              DateTime.parse("2023-01-01 6:30:10.100000")
-                  .hour //not allowed after this time
-          ) {
-        showToast("Sorry you can't check out now!", Colors.blue, context);
-        NaviCubit.get(context).pop(context);
-      }
-      // if (date.day == DateTime.parse(userLocalAttendance).toLocal().day) {
-      //   showToast("Thank you! Checkout was recorded previously.", Colors.blue,
-      //       context);
-      //   NaviCubit.get(context).pop(context);
-      // }
-      // if (date.hour <= DateTime.parse("2023-01-01 07:00:10.100000").hour) {
-      //   showToast("You are too Early, check back at 7 O'clock",
-      //       AppColors.primaryColor, context);
-      //   NaviCubit.get(context).pop(context);
-      // }
-      // if (date.hour >=
-      //         DateTime.parse("2023-01-01 8:10:10.100000")
-      //             .hour //not allowed after this time
-      //     ) {
-      //   showToast("Sorry you are late! Attendance will not be recorded.",
-      //       Colors.blue, context);
-      //   NaviCubit.get(context).pop(context);
-      // }
-
-      emit(LocalDataSuccessful());
-    } catch (e) {
-      //No Saved Attendance
-      return;
-    }
+    });
   }
 
   Future<UserModel> getCurrentUser(context) async {

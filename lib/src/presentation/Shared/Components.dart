@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/utils/managers/app_assets.dart';
 import '../../config/utils/styles/app_colors.dart';
-import '../../data/remote/RemoteHttpRequest.dart';
+import '../../data/remote/API/RemoteHttpRequest.dart';
 import '../Cubits/navigation_cubit/navi_cubit.dart';
 
 TextStyle fontAlmarai(
@@ -169,7 +169,7 @@ Padding logoContainer(context) {
 //Show a toast
 void showToast(String text, Color color, context) => toastification.show(
       context: context,
-      title: Text(text),
+      title: Text(text.toString()),
       alignment: Alignment.bottomCenter,
       primaryColor: color,
       dragToClose: true,

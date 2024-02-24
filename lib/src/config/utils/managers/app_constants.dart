@@ -4,7 +4,7 @@ import 'package:taskforce_hrms/src/presentation/Cubits/navigation_cubit/navi_cub
 import 'package:taskforce_hrms/src/presentation/Modules/Tabs/Profile/Screens/edit_profile_screen.dart';
 import 'package:taskforce_hrms/src/presentation/Shared/Components.dart';
 
-import '../../../presentation/Modules/Tabs/Profile/Screens/reminders_screen.dart';
+import '../../../presentation/Modules/Tabs/Profile/Screens/settings_screen.dart';
 
 abstract class AppConstants {
   static const String appTitle = "TASKFORCE HR";
@@ -26,6 +26,7 @@ abstract class AppConstants {
   static String userLocalAttendance = "userAttendance";
   static String userLocalCheckout = "userCheckOut";
   static String userLocalEleave = "userEleave";
+  static const String userSkipLocalBio = "userLocalBio";
 
   ///Firebase Data
   static String usersCollection = "Users";
@@ -59,7 +60,7 @@ abstract class AppConstants {
 
   static List<String> profileCardsName = [
     "Edit Profile",
-    "Notifications",
+    "Settings & Notifies",
     "Report a problem",
     "Share",
     "Logout"

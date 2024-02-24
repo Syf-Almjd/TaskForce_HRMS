@@ -10,6 +10,7 @@ class HttpRequestPage {
     var response = await client.get(url);
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body); // Use jsonDecode to parse JSON
+      http.head(url);
       return Map<String, dynamic>.from(json);
     }
     return {};

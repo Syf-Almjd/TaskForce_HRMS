@@ -29,7 +29,7 @@ List<PageViewModel> listPagesViewModel(context) => [
         ),
       ),
       PageViewModel(
-        title: "Let's get Started",
+        title: "Let's get Started!",
         body: 'Availability',
         image: Center(
           child: Image.network(
