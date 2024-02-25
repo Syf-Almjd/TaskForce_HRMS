@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
     authDomain: 'taskforce-hrms.firebaseapp.com',
     storageBucket: 'taskforce-hrms.appspot.com',
     measurementId: 'G-FG9J0TDF3E',
-  ); 
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBOgRza5M_mKpA19YXZ2JoXzBRL4N_oaJk',
@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '223695938906',
     projectId: 'taskforce-hrms',
     storageBucket: 'taskforce-hrms.appspot.com',
-    iosClientId: '223695938906-90t0mp7mn1pd622ciiabpaodoi9fihf7.apps.googleusercontent.com',
+    iosClientId:
+        '223695938906-90t0mp7mn1pd622ciiabpaodoi9fihf7.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskforcehrms.taskforceHrms',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '223695938906',
     projectId: 'taskforce-hrms',
     storageBucket: 'taskforce-hrms.appspot.com',
-    iosClientId: '223695938906-klim4irp5ea870tuvlm36of3nqnil2a5.apps.googleusercontent.com',
+    iosClientId:
+        '223695938906-klim4irp5ea870tuvlm36of3nqnil2a5.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskforcehrms.taskforceHrms.RunnerTests',
   );
 }
