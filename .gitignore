@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.lib/src/data/remote/firebase_options.dart/
+
 migrate_working_dir/
 
 # IntelliJ related
@@ -31,7 +33,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-.lib/src/data/remote/firebase_options.dart
 
 # Symbolication related
 app.*.symbols
