@@ -143,8 +143,8 @@ class LocalDataCubit extends Cubit<LocalDataState> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var date = DateTime.now();
 
-      if ((date.hour >= 7 && date.hour <= 8) ||
-          (date.hour >= 19 && date.hour <= 20)) {
+      if ((date.hour >= 6 && date.hour <= 8) ||
+          (date.hour >= 18 && date.hour <= 20)) {
       } else {
         showToast("Sorry... you are not allowed to record attendance now!",
             AppColors.primaryColor, context);
@@ -156,8 +156,8 @@ class LocalDataCubit extends Cubit<LocalDataState> {
   Future<void> getCheckOutStatus(context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var date = DateTime.now();
-      if ((date.hour >= 7 && date.hour <= 8) ||
-          (date.hour >= 19 && date.hour <= 20)) {
+      if ((date.hour >= 6 && date.hour <= 8) ||
+          (date.hour >= 18 && date.hour <= 20)) {
       } else {
         showToast("Sorry... you are not allowed to checkout now!",
             AppColors.primaryColor, context);
