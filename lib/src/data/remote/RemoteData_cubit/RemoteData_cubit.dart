@@ -107,6 +107,7 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
       } else {
         showToast(
             "Error, Please check your internet", AppColors.redColor, context);
+        emit(GetDataError());
       }
     } on FirebaseAuthException catch (error) {
       showToast("error $error", AppColors.redColor, context);

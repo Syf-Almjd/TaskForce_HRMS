@@ -202,17 +202,18 @@ validateForm(
 String getDateTimeToDay(String dateString) {
   try {
     DateTime date = DateTime.parse(dateString).toLocal();
-    String time = "${date.hour}:${date.minute}";
-    if (date.day == DateTime.now().day) {
+    String time = "${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+
+    DateTime now = DateTime.now();
+    if (date.isAtSameMomentAs(now)) {
       return "Today, at $time";
-    }
-    if (date.day == DateTime.now().day + 1) {
+    } else if (date.isAtSameMomentAs(now.add(const Duration(days: 1)))) {
       return "Tomorrow, at $time";
-    }
-    if (date.day == DateTime.now().day - 1) {
+    } else if (date.isAtSameMomentAs(now.subtract(const Duration(days: 1)))) {
       return "Yesterday, at $time";
+    } else {
+      return "${date.day}, ${date.month.dateMonthName} at $time";
     }
-    return ("${date.toUtc().day},  ${date.toUtc().month.dateMonthName.substring(0, 3)}. at: $time");
   } catch (e) {
     return "Loading";
   }
