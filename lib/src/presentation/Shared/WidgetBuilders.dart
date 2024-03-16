@@ -182,6 +182,8 @@ Widget loadButton({
   return BlocBuilder<RemoteDataCubit, RemoteAppStates>(
       builder: (context, state) {
     if (state is GettingData) {
+      Future.delayed(const Duration(seconds: 7))
+          .then((value) => RemoteDataCubit.get(context).delayedData());
       return loadingAnimation(
           loadingType: LoadingAnimationWidget.beat(
               color: AppColors.primaryColor, size: getWidth(10, context)));

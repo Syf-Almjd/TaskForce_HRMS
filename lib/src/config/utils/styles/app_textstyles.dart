@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'app_fonts.dart';
 
-
-
-
 TextStyle _getTextStyle(
     double fontSize, String fontFamily, FontWeight fontWeight, Color color) {
   return TextStyle(
@@ -44,7 +41,6 @@ TextStyle getSemiBoldStyle(
       fontSize, FontConstants.fontFamily, AppFontWeight.semiBold, color);
 }
 
-
 // medium text style
 
 TextStyle getMediumStyle(
@@ -53,16 +49,8 @@ TextStyle getMediumStyle(
       fontSize, FontConstants.fontFamily, AppFontWeight.medium, color);
 }
 
-
 TextStyle italic = const TextStyle(
   fontSize: 12,
   fontStyle: FontStyle.italic,
   fontWeight: FontWeight.w100,
 );
-
-
-
-
-
-
-

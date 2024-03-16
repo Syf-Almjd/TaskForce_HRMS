@@ -37,6 +37,10 @@ class RemoteDataCubit extends Cubit<RemoteAppStates> {
     return dataList;
   }
 
+  delayedData() {
+    emit(GetDataError());
+  }
+
   //Firebase get current user data
   Future<UserModel> getUserData() async {
     emit(GettingData());

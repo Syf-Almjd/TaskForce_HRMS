@@ -2,7 +2,7 @@ name: taskforce_hrms
 description: A system of human resources managment system using Flutter, Firebase and Pythin for AI.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.0.1 <4.0.0'
